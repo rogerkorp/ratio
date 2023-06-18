@@ -1,0 +1,50 @@
+CACHE MANIFEST
+# version 000
+# Include the version number so that the web app will know a new varient was created.
+# It's like updating a native app, but with javascript.
+
+# If you make any changes to this file, it will prompt the user to download this as a "new version"
+
+CACHE:
+
+# CSS
+
+assets/main.css
+assets/normalize.css
+assets/css-add2home.css
+
+# FONTS
+
+assets/fonts/
+
+# ICONS
+
+assets/icon/iphone/29.png
+assets/icon/iphone/40.png
+assets/icon/iphone/57.png
+assets/icon/iphone/58.png
+assets/icon/iphone/60.png
+assets/icon/iphone/80.png
+assets/icon/iphone/87.png
+assets/icon/iphone/114.png
+assets/icon/iphone/120.png
+assets/icon/iphone/180.png
+assets/icon/iphone/1024.png
+assets/icon/ipad/20.png
+assets/icon/ipad/29.png
+assets/icon/ipad/40.png
+assets/icon/ipad/50.png
+assets/icon/ipad/58.png
+assets/icon/ipad/72.png
+assets/icon/ipad/76.png
+assets/icon/ipad/80.png
+assets/icon/ipad/100.png
+assets/icon/ipad/144.png
+assets/icon/ipad/152.png
+assets/icon/ipad/167.png
+
+# SCRIPTS
+
+assets/scripts/js-add2home.js
+assets/scripts/js-refresh-manifest.js
+assets/scripts/script.js
