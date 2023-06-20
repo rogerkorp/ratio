@@ -34,10 +34,10 @@ function appendVotingList(){
 
     //Step 5: Update the HTML to reflect the current list
         for (let i=0; i<itemList.length; i++){
-            itemListHTMLText += '<li class="itemListItem">' + itemList[i] + '<button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')>-</button></li>'; //Button allows you to delete that specific list item.
+            itemListHTMLText += '<li class="itemListItem"><div class="listItemText">' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')>-</button></li>'; //Button allows you to delete that specific list item.
         }
 
-        itemListHTMLPreview.innerHTML = '<ol class="itemList">' + itemListHTMLText +'</ol>';
+        itemListHTMLPreview.innerHTML = '<ul class="itemList">' + itemListHTMLText +'</ul>';
         clearCurrentValues();
 
 }
@@ -58,7 +58,7 @@ function spliceVotingList(listItemNumber){
 
     //Step 3: Rebuilds the HTML Text to reflect the current list
     for (let i=0; i<itemList.length; i++){
-        itemListHTMLText += '<li class="itemListItem">' + itemList[i] + '<button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')>-</button></li>';
+        itemListHTMLText += '<li class="itemListItem"><div class="listItemText">' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')>-</button></li>';
     }
     itemListHTMLPreview.innerHTML = '<ol class="itemList">' + itemListHTMLText +'</ol>'
 
@@ -71,7 +71,9 @@ window.onkeyup = function(event) {
     if (el === document.activeElement){
         if (event.which == 13) {
             appendVotingList();
-            window.scrollTo(0, document.body.scrollHeight);
+           
+            let elem = document.getElementById('preview-voting-item-list');
+            elem.scrollTop = elem.scrollHeight;
 
         }
     }

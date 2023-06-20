@@ -56,6 +56,25 @@ nav button{
     justify-content: space-between;
     padding: .25em;
     border-top: 1px solid lightgray;
+    margin-left: 2em;
+}
+
+.listItemText{
+    width: 80%;
+    overflow-wrap: break-word;
+}
+
+.itemList{
+    margin-top: auto;
+}
+
+.itemListItem{
+    display: flex;
+    justify-content: space-between;
+    margin-left: -2em;
+    padding: 1em .5em 1em .5em;
+    border-bottom: .1em solid rgb(234, 234, 234);
+
 }
 
 /* ------- ID Selectors ------- */
@@ -72,6 +91,13 @@ nav button{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+#preview-voting-item-list{
+    overflow: scroll;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
 }
 
 #id{
