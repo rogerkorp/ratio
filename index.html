@@ -52,7 +52,7 @@
 
     </head>
     
-    <body>
+    <body onload="restart()">
 
     
 
@@ -62,23 +62,55 @@
             <p id="landscape_warning_message">This app is vertical only.</p>
         </div>
 
-        <div id="exercise" style="display: none">
-            <div id="choices"></div>
-            <div id="votes-needed"><p class="not-ready">Votes Needed: 0/0</p></div>
-            <details id="cool-graph" style="display: none">
-                <summary>View Results</summary>
-                <ul id="results-list"></ul>
-                <div class="data">
-                    <table id="list-item-matrix"></table>
-                </div>
-            </details>
-            <button class="submit-button" onclick="restart();">Restart</button>
 
+
+        <div id="results" style="display: none">
+
+            <nav style="display: flex;">
+                <button class="nav-part" onclick="keepVoting()">Go Back</button>
+                <div class="nav-part" id="logo"></div>
+                <button class="nav-part" onclick="restart()" id="restart">New Vote</button>
+            </nav>
+
+            <div class="main-results">
+   
+
+                    <div class="data">
+                        <div id="list-item-matrix"></div>
+                    </div>
+       
+            </div>
         </div>
-    
-        
-        <div class="new-vote" id="new-vote">
 
+
+
+        <div id="exercise" style="display: none">
+            <nav style="display: flex;">
+                <button class="nav-part" onclick="restart()" id="restart">Restart</button>
+                <div class="nav-part" id="logo"></div>
+                <button class="nav-part" id="show-results" style="display: none" onclick="showResults()">Results</button>
+                <button class="nav-part" id="show-results-null" display="flex">Results</button>
+            </nav>
+            <div class="main-voting">
+                <div id="progress-bar" class="progress-bar">
+                    <progress id="vote-progress"></progress>
+                    <div class="progress-bar-text">
+                        <p>XX Votes Needed</p>
+                        <p>50% Complete</p>
+                    </div>
+                </div>
+                <div id="choices"></div>
+
+       <!--           -->
+
+            </div>
+        </div>
+        
+
+
+
+
+        <div class="new-vote" id="new-vote">
             <nav style="display: flex;">
                 <button class="nav-part" id="info">About</button>
                 <div class="nav-part" id="logo"></div>
@@ -87,22 +119,20 @@
                 <button class="nav-part" id="submit" name="create-new-list-submit" id="create-new-list-submit" value="Submit">Start</button>
                 </form>
             </nav>
-
-        
-
             <div class="screen_create-list">
-                <!-- Navigation Bar -->
+                <div id="time-estimate"></div>
                 <div id="preview-voting-item-list"></div>
                 <div id="bottom"></div>
             </div>
-
             <form id="add-new-voting-item-submssion-field" onSubmit="return false;">
-                <input class="new-vote-textbox" name="add-new-voting-item" type="text" id="add-new-voting-item" placeholder="Add a choice..."><br>
+                <input class="new-vote-textbox" name="add-new-voting-item" type="text" id="add-new-voting-item" placeholder="Add a choice...">
+                <input type="button" id="new-vote-add-button" value="add" onclick="appendVotingList()">
             </form>
-
-
-
         </div>
+    
+
+
+
 
         <script src="assets/scripts/js-refresh-manifest.js"></script> 
         <script src="assets/scripts/script.js"></script>

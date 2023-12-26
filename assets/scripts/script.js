@@ -14,7 +14,7 @@ let matrix = [];
 let booleanMatrix = [];
 let totalVotes = [];
 let list = [];
-let question;
+
 
 let sumTotalVotes = 0;
 
@@ -49,7 +49,6 @@ let colorscale = ['#67001f', '#6c0521', '#700b23', '#751125', '#791627', '#7e1a2
 
 let elo = [];
 
-
 /* CREATING THE ITEM LIST */
 
 
@@ -76,13 +75,19 @@ function appendVotingList(){
 
     //Step 5: Update the HTML to reflect the current list
         for (let i=0; i<itemList.length; i++){
-            itemListHTMLText += '<li class="itemListItem"><div class="listItemText">' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')>-</button></li>'; //Button allows you to delete that specific list item.
+            itemListHTMLText += '<li class="itemListItem"><div class="listItemText">' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>'; //Button allows you to delete that specific list item.
         }
 
         itemListHTMLPreview.innerHTML = '<ul class="itemList">' + itemListHTMLText +'</ul>';
         clearCurrentValues();
 
+        document.getElementById('bottom').scrollIntoView();
+
 }
+
+
+
+//On average, it takes about 5 seconds per vote.
 
 function clearCurrentValues(){
     document.getElementById('add-new-voting-item').value = '';
@@ -100,7 +105,7 @@ function spliceVotingList(listItemNumber){
 
     //Step 3: Rebuilds the HTML Text to reflect the current list
     for (let i=0; i<itemList.length; i++){
-        itemListHTMLText += '<li class="itemListItem"><div class="listItemText">' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')>-</button></li>';
+        itemListHTMLText += '<li class="itemListItem"><div class="listItemText">' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>';
     }
     itemListHTMLPreview.innerHTML = '<ol class="itemList">' + itemListHTMLText +'</ol>'
 
@@ -113,12 +118,10 @@ window.onkeyup = function(event) {
     if (el === document.activeElement){
         if (event.which == 13) {
             appendVotingList();
-
-            document.getElementById('bottom').scrollIntoView();
            
   /*        let elem = document.getElementById('bottom');
         elem.scrollTop = elem.scrollHeight;  */
-        
+
     /*         setTimeout(() => {
                 window.scrollTo(0, document.body.scrollHeight);
             }, 0); */
@@ -140,8 +143,7 @@ function readData() {
     
         if (window.localStorage.getItem('matrix')){
 
-            let lastQuestion = window.localStorage.getItem('question');
-            document.getElementById("question").value = lastQuestion;
+            
 
             let lastList = window.localStorage.getItem('sanitized-list');
             document.getElementById("write-new-list").value = lastList;
@@ -230,50 +232,81 @@ function shuffle(array){
 }
 
 
+function sortResults(elo, name){
+        // Create a map to store the relationships between elements in arr1 and arr2
+        const mapping = new Map(name.map((element, index) => [element, elo[index]]));
+        // Sort the second array (arr2) in ascending order
+        elo.sort((a, b) => b - a);
+        // Sort the first array (arr1) based on the order of elements in the sorted arr2
+        name.sort((a, b) => mapping.get(b) - mapping.get(a));
+        return [elo, name]; // Return both sorted arrays
+}
+
+function elo_to_percentage(elo, min, max){
+    let elo_difference = max - min;
+    let percentage = (elo - min) / elo_difference;
+    return percentage;
+}
+
+function percentage_to_grade(percentage){
+    let rank = (percentage * 100).toFixed(0)
+    let grade;
+    if (rank >= 94){
+        grade = "A+";
+    } else if ((rank >= 86 ) && (rank <= 94)){
+        grade = "A";
+    } else if ((rank >= 80 ) && (rank <= 86)){
+        grade = "A-";
+    } else if ((rank >= 74 ) && (rank <= 80)){
+        grade = "B+";
+    } else if ((rank >= 66 ) && (rank <= 74)){
+        grade = "B";
+    } else if ((rank >= 60 ) && (rank <= 66)){
+        grade = "B-";
+    } else if ((rank >= 54 ) && (rank <= 60)){
+        grade = "C+";
+    } else if ((rank >= 46) && (rank <= 54)){
+        grade = "C";
+    } else if ((rank >= 40 ) && (rank <= 46)){
+        grade = "C-";
+    } else if ((rank >= 34 ) && (rank <= 40)){
+        grade = "D+";
+    } else if ((rank >= 26 ) && (rank <= 34)){
+        grade = "D";
+    } else if ((rank >= 20 ) && (rank <= 26)){
+        grade = "D-";
+    } else if (rank <= 20 ){
+        grade = "F"
+    } else {
+        grade = "N/A"
+    }
+    console.log(grade);
+    return grade;
+
+};
+
 function printMatrix(myArray){
+
+    sortResults(elo, list);
+    
+    let eloMax = Math.max(...elo);
+    let eloMin = Math.min(...elo)
+
     let result = "";
-
-    result += '<table>'
-    result += '<colgroup></colgroup>'
-    result += '<colgroup></colgroup>'
-    result += '<colgroup></colgroup>'
-
-    for (let i=0; i<(myArray.length); i++) {
-       result += '<colgroup class="shade"></colgroup>'
-    };
-
-    result +='<tr><th>NAME</th><th>RANK</th><th>ID</th>'
+    result += '<div class="results-item"><p class="result-placement">Place</p><p class="result-item">Item</p><p class="result-item">Score</p></div>';
 
     for (let i=0; i<myArray.length; i++) {
-        result += '<th scope="column" class="column-header">' + (i+1) + '</th>';
+        let score_percent = elo_to_percentage(elo[i], eloMin, eloMax);
+        result += '<div class="results-item"><p class="result-placement">' + (i+1) + '.</p><p class="result-item">' + list[i] + '</p><p class="result-percentage" style="background-color:' + colorscale[((score_percent * 100).toFixed(0) - 1)] + '">' + (score_percent * 100).toFixed(0) + '% (' + percentage_to_grade(score_percent) + ')</p></div>';
+        
+
     };
 
-    result += '</tr>'
-
-    for (let i=0; i<myArray.length; i++) {
-        result += "<tr>";
-        result += '<td class="y-axis-label" scope="row">' + list[i] + '</td><td class="y-axis-elo" scope="row">' + Math.round(elo[i]) + '</td><td class="y-axis-label" scope="row">' + (i+1) + '</th>';
-        for (let j=0; j<myArray[i].length; j++){
-            
-            result += '<td class="data-cell" style="background-color: ' + colorscale[Math.floor(booleanMatrix[i][j])] + '">'
-
-           /*  if (booleanMatrix[i][j] === 50){
-                result +=  '<td class="neutral">'
-            } else if (booleanMatrix[i][j] > 50){
-                result +=  '<td class="positive">' 
-            } else if (booleanMatrix[i][j] < 50){
-                result +=  '<td class="negative">' 
-            } */
-            result += Math.floor(booleanMatrix[i][j]) + '%<span class="tooltiptext">' + myArray[i][j] + ' (' + (booleanMatrix[i][j]).toFixed(2) + "%)</span></td>";
-        }
-        result += "</tr>";
-    };
-
-
-
-    result += "</table>"
     return result;
 }
+
+
+
 
 function createNewList(){
     newListValues = itemList.toString();
@@ -316,35 +349,29 @@ function createNewList(){
         };
         //Create an equal amount of columns.
         //Black out the corners
-        document.getElementById("list-item-matrix").innerHTML = printMatrix(matrix);
-        document.getElementById("votes-needed").innerHTML = '<p class="not-ready">Votes Needed (Recommended): ' + sumTotalVotes + '/' + (list.length - 1)*(list.length/2) + '</p>';
+        
         giveChoice();
     };
 };
 
 function giveChoice(){
-    if (window.localStorage.getItem('question')){
-        question = window.localStorage.getItem('question');
-    } else {
-        question = document.getElementById("question").value;
-    }
-    let sanitizedQuestion = sanitizeInputs(question);
-
+  
 
     percentageRemainingVotes = sumTotalVotes / ( (list.length - 1)*(list.length/2));
 
 
     if (percentageRemainingVotes <= .999){
-        document.getElementById("votes-needed").innerHTML = '<p class="not-ready">Votes Needed: ' + sumTotalVotes + '/' +  (list.length - 1)*(list.length/2) + '</p>';
+/*         document.getElementById("votes-needed").innerHTML = '<p class="not-ready">Votes Needed: ' + sumTotalVotes + '/' +  (list.length - 1)*(list.length/2) + '</p>'; */
+        document.getElementById("progress-bar").innerHTML = '<progress id="vote-progress" value="' + sumTotalVotes + '" max="' + (list.length - 1)*(list.length/2) + '"></progress> <div class="progress-bar-text"><p>' + (((list.length - 1)*(list.length/2)) - sumTotalVotes) + ' Votes Needed</p><p>' + Math.round(percentageRemainingVotes * 100) + '% Complete</p></div>';
     } else if (percentageRemainingVotes >= .999){
-        document.getElementById("votes-needed").innerHTML = '<p class="ready">Total Votes: ' + sumTotalVotes + '</p>';
-        document.getElementById("cool-graph").style.display = "block";
-
+        document.getElementById("progress-bar").innerHTML = '<progress id="vote-progress" value="' + sumTotalVotes + '" max="' + (list.length - 1)*(list.length/2) + '"></progress> <div class="progress-bar-text"><p>' + (sumTotalVotes) + ' Total Votes</p><p>100% Complete</p></div>';
+        document.getElementById("show-results").style.display = 'flex';
+        document.getElementById("show-results-null").style.display = 'none';
     }
 
     console.log(totalVotes)
 
-    window.localStorage.setItem('question', sanitizedQuestion);
+
     // Drawing criteria:
     // 1. The two choices have to be unique (x cannot be compared to x)
     // 2. Of the two choices, one must not have been drawn in the prior round. (if the last round was between x & y, then this round cannot have both x or y as choices. It must be one or the other. )
@@ -376,9 +403,7 @@ function giveChoice(){
     console.log(fifoRow);
 
 
-
-    document.getElementById("choices").innerHTML = '<h2 id="question-header">' + sanitizedQuestion + '?</h2>';
-    document.getElementById("choices").innerHTML += '<div class="buttons-to-press"><input type="button" class="choice-button" onclick="option(' + chooseRow +', ' + chooseColumn +')" name="option1" id="option1" value="' + list[chooseRow] + '">' + '<input type="button" class="choice-button" onclick="option(' + chooseColumn +', ' + chooseRow +')"" name="option2" id="option2" value="' + list[chooseColumn] + '"></div>';
+    document.getElementById("choices").innerHTML = '<div class="buttons-to-press"><input type="button" class="choice-button" onclick="option(' + chooseRow +', ' + chooseColumn +')" name="option1" id="option1" value="' + list[chooseRow] + '">' + '<input type="button" class="choice-button" onclick="option(' + chooseColumn +', ' + chooseRow +')"" name="option2" id="option2" value="' + list[chooseColumn] + '"></div>';
 
 
     choiceA_Rating = elo[chooseRow];
@@ -476,7 +501,7 @@ function option(chosen, rejected){
     window.localStorage.setItem('sum-total-votes', sumTotalVotes);
 
     giveChoice();
-    document.getElementById("list-item-matrix").innerHTML = printMatrix(matrix);
+    // document.getElementById("list-item-matrix").innerHTML = printMatrix(matrix);
 
     window.localStorage.setItem('elo', JSON.stringify(elo));
     window.localStorage.setItem('votes', JSON.stringify(totalVotes));
@@ -493,11 +518,23 @@ function option(chosen, rejected){
 
 };
 
+
+function showResults(){
+    document.getElementById("exercise").style.display = "none";
+    document.getElementById("results").style.display = "flex";
+    document.getElementById("list-item-matrix").innerHTML = printMatrix(matrix)
+}
+
+function keepVoting(){
+    document.getElementById("exercise").style.display = "block";
+    document.getElementById("results").style.display = "none";  
+}
+
+
 function restart(){
     window.localStorage.removeItem('elo');
     window.localStorage.removeItem('votes');
     window.localStorage.removeItem('matrix');
-    window.localStorage.removeItem('question');
     window.localStorage.removeItem('boolean-matrix');
     window.localStorage.removeItem('sum-total-votes');
 
@@ -511,5 +548,8 @@ function restart(){
 
     document.getElementById("exercise").style.display = "none";
     document.getElementById("new-vote").style.display = "flex";
-    document.getElementById("cool-graph").style.display = "none";
+
+    document.getElementById("show-results").style.display = 'none';
+    document.getElementById("show-results-null").style.display = 'flex';
+    document.getElementById("results").style.display = "none";
 }

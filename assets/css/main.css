@@ -3,9 +3,11 @@
 :root{
     --black: #000000;
     --white: #ffffff;
+    --blue: #0099ff;
     --background-color: #F2F2F2;
     --primary-text: #0099ff;
     --cancel-color: #d03d10;
+    --null: #c2c2c2;
 }
 
 
@@ -59,7 +61,6 @@ nav{
     backdrop-filter: blur(5px);
     position: fixed;
     top: 0;
-    box-shadow: 0em -1em 3em rgba(0, 0, 0, 0.211);
 }
 
 nav button{
@@ -67,7 +68,7 @@ nav button{
     background: var(--primary-text);
     padding:  1em 1.5em;
     border: none;
-    border-radius: 5em;
+    border-radius: .5em;
     color: var(--white);
     cursor: pointer;
 }
@@ -94,6 +95,7 @@ nav button{
 
 .itemList{
     margin-top: auto;
+    padding-left: 2em;
 }
 
 .itemListItem{
@@ -107,17 +109,17 @@ nav button{
 }
 
 .removeListItemButton{
-    background-color: var(--cancel-color);
     display: flex;
     align-items: center;
     justify-content: center;
     height: 2em;
     width: 2em;
-    border-radius: 2em;
+    border-radius: .25em;
     color: white;
     border: none;
     font-weight: bold;
     cursor: pointer;
+    padding: 1em
 }
 
 .exercise{
@@ -134,7 +136,78 @@ nav button{
     height: 100vh;
 }
 
+.main-voting{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
+.main-results{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 5em;
+}
+
+#choices{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+}
+
+.buttons-to-press{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.choice-button{
+    font-size: 1.5em;
+    width: 90vw;
+    height: 28vh;
+    margin: .25em;
+    background-color: var(--white);
+    border: 1px solid var(--blue);
+    color: var(--blue);
+    border-radius: .5em;
+    white-space: normal;
+    word-wrap: break-word;
+    padding: .25em;
+}
+
+.choice-button:hover{
+    transition: background-color .25s, color .25s, border .25s;
+    background-color:var(--blue);
+    border: 1px solid var(--blue);
+    color: var(--white);
+    cursor: pointer;
+}
+
+/* Progress Bar */
+
+.progress-bar{
+    display: flex;
+    flex-direction: column;
+    margin: 1em;
+    margin-top: 6em;
+}
+
+.progress-bar-visuals{
+    width: auto;
+    height: 3em;
+    background-color: #1458a2;
+    border-radius: .5em;
+}
+
+.progress-bar-text{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 
 /* ------- ID Selectors ------- */
 
@@ -168,10 +241,12 @@ nav button{
 }
 
 #logo{
-    background-image: url('../icon/favicon.svg');
+    /* background-image: url('../icon/favicon.svg'); */
     background-size: cover;
     height: 2em;
-    width: 2.5em;
+    width: 2em;
+    background-color: var(--blue);
+    border-radius: 4em;
     margin: 1em;
 }
 
@@ -180,6 +255,84 @@ nav button{
     font-weight: bold;
     text-align: center;
 }
+
+#restart{
+    background-color: var(--cancel-color);
+}
+
+#show-results-null{
+    background-color: var(--null);
+}
+
+#show-results-null:hover{
+    cursor: not-allowed;
+}
+
+#results{
+    position: absolute;
+    background-color: var(--background-color);
+    width: 100vw;
+    height: 100vh;
+    flex-direction: column;
+}
+
+#vote-progress{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: 1em;
+    border: none;
+    border-radius: .25em;
+}
+
+#list-item-matrix{
+    width: 100vw;
+    border-collapse: collapse;
+}
+
+#new-vote-add-button{
+    margin: .5em .5em .5em 0em;
+    border-radius: 4em;
+    border: none;
+    height: 3.2em;
+    width: 5em;
+    background-color: var(--white);
+}
+
+#new-vote-add-button:hover{
+    background-color: var(--null);
+    cursor: pointer;
+}
+
+
+.results-item{
+    display: grid;
+    grid-template-columns: 3em auto 7em;
+    background-color: var(--white);
+    margin: .25em 1em;
+    padding: .50em;
+    border-radius: .5em;
+    align-items: center;
+    color: black;
+}
+
+.results-item p{
+    margin: 0;
+}
+
+.result-item{
+    font-weight: bold;
+}
+
+.result-percentage{
+    background-color: #000000;
+    color: white;
+    font-weight: bold;
+    padding: .5em;
+    text-align: center;
+    border-radius: .25em;
+}
+
 
 /* ------- Media Queries ------- */
 
