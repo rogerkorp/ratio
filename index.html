@@ -67,12 +67,17 @@
         <div id="results" style="display: none">
 
             <nav style="display: flex;">
-                <button class="nav-part" onclick="keepVoting()">Go Back</button>
+                <button class="nav-part" onclick="keepVoting()">Back</button>
                 <div class="nav-part" id="logo"></div>
-                <button class="nav-part" onclick="restart()" id="restart">New Vote</button>
+                <button class="nav-part" onclick="restart()" id="restart">New</button>
             </nav>
 
             <div class="main-results">
+                    <div class="winner">
+                        <p class="winner-flavor">Your top pick was...</p>
+                        <p class="winner-result" id="winner-result">Undefined</p>
+                        <p class="winner-margin" id="winner-preference">+XX% Margin of Preference</p>
+                    </div>
    
 
                     <div class="data">

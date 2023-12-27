@@ -5,7 +5,7 @@
     --white: #ffffff;
     --blue: #0099ff;
     --background-color: #F2F2F2;
-    --primary-text: #0099ff;
+    --primary-text: #000000;
     --cancel-color: #d03d10;
     --null: #c2c2c2;
 }
@@ -148,8 +148,8 @@ nav button{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
     padding-top: 5em;
+    padding-bottom: 2em;
 }
 
 #choices{
@@ -307,7 +307,7 @@ nav button{
 
 .results-item{
     display: grid;
-    grid-template-columns: 3em auto 7em;
+    grid-template-columns: 3em auto 5em;
     background-color: var(--white);
     margin: .25em 1em;
     padding: .50em;
@@ -320,8 +320,14 @@ nav button{
     margin: 0;
 }
 
+.result-placement{
+    text-align: right;
+    padding-right: .75em;
+}
+
 .result-item{
     font-weight: bold;
+    padding-right: .5em;
 }
 
 .result-percentage{
@@ -331,6 +337,21 @@ nav button{
     padding: .5em;
     text-align: center;
     border-radius: .25em;
+}
+
+.winner{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+#winner-result{
+    font-size: 3em;
+    font-weight: bold;
+    margin: .5em;
+    text-align: center;
 }
 
 

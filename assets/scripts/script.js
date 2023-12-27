@@ -70,7 +70,7 @@ function appendVotingList(){
     //Step 4: If THAT check clears, add the list item to the array
         } else {
             itemList.push(newItem);
-            itemListHTMLText = '';
+            itemListHTMLText = "";
         };
 
     //Step 5: Update the HTML to reflect the current list
@@ -248,6 +248,24 @@ function elo_to_percentage(elo, min, max){
     return percentage;
 }
 
+
+function elo_percent_from_neutral(elo){
+    let neutral_elo = 1000;
+    let percent_from_neutral = elo / neutral_elo;
+    let reported_difference;
+    if (percent_from_neutral <= 1.0){
+        /* Negative Difference */
+        reported_difference = '-' + (100-(percent_from_neutral*100)).toFixed(1) + '%';
+    } else if (percent_from_neutral >= 1.0){
+        /* Positive Difference */
+        reported_difference = '+' + ((percent_from_neutral * 100) - 100).toFixed(1) + '%'; 
+    } else if (percent_from_neutral == 1.0){
+        reported_difference = '0%';
+    }
+    return reported_difference;
+}
+
+
 function percentage_to_grade(percentage){
     let rank = (percentage * 100).toFixed(0)
     let grade;
@@ -293,11 +311,11 @@ function printMatrix(myArray){
     let eloMin = Math.min(...elo)
 
     let result = "";
-    result += '<div class="results-item"><p class="result-placement">Place</p><p class="result-item">Item</p><p class="result-item">Score</p></div>';
+    result += '<div class="results-item"><p class="result-placement">Place</p><p class="result-item">Item</p><p class="result-item">Margin</p></div>';
 
     for (let i=0; i<myArray.length; i++) {
         let score_percent = elo_to_percentage(elo[i], eloMin, eloMax);
-        result += '<div class="results-item"><p class="result-placement">' + (i+1) + '.</p><p class="result-item">' + list[i] + '</p><p class="result-percentage" style="background-color:' + colorscale[((score_percent * 100).toFixed(0) - 1)] + '">' + (score_percent * 100).toFixed(0) + '% (' + percentage_to_grade(score_percent) + ')</p></div>';
+        result += '<div class="results-item"><p class="result-placement">' + (i+1) + '.</p><p class="result-item">' + list[i] + '</p><p class="result-percentage" style="background-color:' + colorscale[((score_percent * 100).toFixed(0) - 1)] + '">' + elo_percent_from_neutral(elo[i]) + '</p></div>';
         
 
     };
@@ -309,10 +327,12 @@ function printMatrix(myArray){
 
 
 function createNewList(){
-    newListValues = itemList.toString();
+    /* newListValues = itemList.toString();
     console.log(newListValues)
     sanitizedList = sanitizeInputs(newListValues);
-    list = sanitizedList.split(",");
+    list = sanitizedList.split(","); */
+
+    list = itemList;
 
     if (list.length > 2){
         window.localStorage.setItem('sanitized-list', sanitizedList);
@@ -355,8 +375,6 @@ function createNewList(){
 };
 
 function giveChoice(){
-  
-
     percentageRemainingVotes = sumTotalVotes / ( (list.length - 1)*(list.length/2));
 
 
@@ -461,16 +479,16 @@ function option(chosen, rejected){
     if (elo[chooseRow] == elo[chosen]){
         elo[chosen] = choiceA_Rating + choiceA_K * (1 - choiceA_ExpectedScore);
         elo[rejected] = choiceB_Rating + choiceB_K * (0 - choiceB_ExpectedScore);
-        if (elo[rejected]<= 0){
-            elo[rejected] = 0;
+        if (elo[rejected]<= 100){
+            elo[rejected] = 100;
         }
     }; 
 
     if (elo[chooseColumn] == elo[chosen]){
         elo[chosen] = choiceB_Rating + choiceB_K * (1 - choiceB_ExpectedScore);
         elo[rejected] = choiceA_Rating + choiceA_K * (0 - choiceA_ExpectedScore);
-        if (elo[rejected]<= 0){
-            elo[rejected] = 0;
+        if (elo[rejected]<= 100){
+            elo[rejected] = 100;
         }
     }; 
 
@@ -487,7 +505,6 @@ function option(chosen, rejected){
     for (let i=0; i<matrix.length; i++){
         for (let j=0; j<matrix.length; j++){
             booleanMatrix[i][j] = (getExpectedScore(elo[i], elo[j])*100);
-            console.log (booleanMatrix[i][j]);
         }
     }
 
@@ -522,7 +539,10 @@ function option(chosen, rejected){
 function showResults(){
     document.getElementById("exercise").style.display = "none";
     document.getElementById("results").style.display = "flex";
-    document.getElementById("list-item-matrix").innerHTML = printMatrix(matrix)
+
+    document.getElementById("list-item-matrix").innerHTML = printMatrix(matrix);
+    document.getElementById("winner-result").innerHTML = list[0];
+    document.getElementById("winner-preference").innerHTML = elo_percent_from_neutral(elo[0]) + " Margin of Preference"
 }
 
 function keepVoting(){
