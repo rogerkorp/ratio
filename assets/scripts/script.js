@@ -8,7 +8,6 @@ let itemListHTMLPreview =  document.getElementById('preview-voting-item-list'); 
 
 
 let newListValues;
-let sanitizedList;
 let text = "<th></th>";
 let matrix = [];
 let booleanMatrix = [];
@@ -45,7 +44,7 @@ let choiceA_minus_choiceB;
 let choiceB_minus_choiceA;
 let percentageRemainingVotes;
 
-let colorscale = ['#67001f', '#6c0521', '#700b23', '#751125', '#791627', '#7e1a29', '#821f2b', '#87232d', '#8c282f', '#902c31', '#953034', '#993436', '#9e3838', '#a23d3b', '#a6413d', '#ab453f', '#af4942', '#b34e45', '#b85247', '#bc564a', '#c05b4d', '#c45f4f', '#c86452', '#cc6855', '#d06d58', '#d4715b', '#d8765f', '#db7b62', '#df7f65', '#e28469', '#e5896c', '#e88e70', '#eb9374', '#ee9878', '#f19e7c', '#f3a380', '#f5a886', '#f6ae8d', '#f7b394', '#f8b99c', '#f9bfa3', '#fac4aa', '#fbcab2', '#fbcfba', '#fbd5c2', '#fbdaca', '#fbe0d2', '#fbe6db', '#faece4', '#f9f1ed', '#f7f7f7', '#eff3f5', '#e8eff4', '#e0ecf2', '#d8e8f0', '#d1e4ef', '#c9e0ed', '#c2dceb', '#bad9e9', '#b3d5e7', '#abd1e5', '#a3cde3', '#9bcae1', '#94c6de', '#8dc2dc', '#88bdda', '#83b9d7', '#7eb5d5', '#79b1d2', '#74accf', '#6fa8cc', '#6ba4c9', '#66a0c6', '#629bc3', '#5e97bf', '#5a93bc', '#568fb9', '#528bb5', '#4e86b2', '#4a82ae', '#467eab', '#437aa7', '#3f76a4', '#3c72a0', '#386e9d', '#356a99', '#326695', '#2e6292', '#2b5e8e', '#285a8a', '#255686', '#225283', '#1f4e7f', '#1c4a7b', '#194678', '#164374', '#133f70', '#0f3b6c', '#0c3768', '#083465', '#053061'];
+let colorscale = ['#4d1713', '#4f1915', '#511b16', '#531d18', '#561f1a', '#58211c', '#5a231e', '#5c2520', '#5f2822', '#612a24', '#632c27', '#662f29', '#68312c', '#6a342f', '#6d3731', '#6f3934', '#723c37', '#743f3a', '#76423d', '#794540', '#7b4844', '#7e4b47', '#804e4b', '#83514e', '#855552', '#885856', '#8a5b5a', '#8d5f5e', '#8f6362', '#926667', '#946a6b', '#976e6f', '#997274', '#9c7679', '#9e7a7e', '#a07e83', '#a38288', '#a5868d', '#a78b92', '#aa8f98', '#ac949e', '#ae98a3', '#b09da9', '#b3a2af', '#b5a7b5', '#b7acbb', '#b9b1c2', '#bbb6c8', '#bcbbcf', '#bec0d6', '#bdc1d7', '#b9bdd3', '#b5bacf', '#b1b6cb', '#adb2c8', '#a9afc4', '#a5abc0', '#a2a8bc', '#9ea4b9', '#9aa1b5', '#979eb2', '#939aae', '#9097ab', '#8c94a7', '#8991a4', '#858ea1', '#828b9e', '#7f889a', '#7c8597', '#788294', '#757f91', '#727c8e', '#6f798b', '#6c7688', '#697385', '#667182', '#646e80', '#616b7d', '#5e697a', '#5b6677', '#596475', '#566172', '#545f70', '#515c6d', '#4f5a6b', '#4c5868', '#4a5566', '#485363', '#455161', '#434f5f', '#414d5d', '#3f4b5a', '#3d4858', '#3b4656', '#394454', '#374252', '#354150', '#333f4e', '#313d4c', '#2f3b4a'];
 
 let elo = [];
 
@@ -118,13 +117,6 @@ window.onkeyup = function(event) {
     if (el === document.activeElement){
         if (event.which == 13) {
             appendVotingList();
-           
-  /*        let elem = document.getElementById('bottom');
-        elem.scrollTop = elem.scrollHeight;  */
-
-    /*         setTimeout(() => {
-                window.scrollTo(0, document.body.scrollHeight);
-            }, 0); */
 
         }
     }
@@ -142,26 +134,31 @@ function readData() {
         console.log("Browser supports local storage");
     
         if (window.localStorage.getItem('matrix')){
+          /*   let lastList = window.localStorage.getItem('sanitized-list');
+            document.getElementById("write-new-list").value = lastList; */
 
             
-
-            let lastList = window.localStorage.getItem('sanitized-list');
-            document.getElementById("write-new-list").value = lastList;
-            
-            list = JSON.parse(window.localStorage.getItem('list'));
+            itemList = JSON.parse(window.localStorage.getItem('list'));
             matrix = JSON.parse(window.localStorage.getItem('matrix'));
             booleanMatrix = JSON.parse(window.localStorage.getItem('boolean-matrix'));
             elo = JSON.parse(window.localStorage.getItem('elo'));
             totalVotes = JSON.parse(window.localStorage.getItem('votes'));
-
             sumTotalVotes = JSON.parse(window.localStorage.getItem('sum-total-votes'));
+
+
+            console.log(itemList);
+            console.log(matrix);
+            console.log(booleanMatrix);
+            console.log(elo);
+            console.log(totalVotes);
+            console.log(sumTotalVotes)
+
 
             if (window.localStorage.getItem('sum-total-votes') == null){
                 sumTotalVotes = 0;
-            }
+            };
 
             createNewList();
-
 
         }
 
@@ -315,7 +312,7 @@ function printMatrix(myArray){
 
     for (let i=0; i<myArray.length; i++) {
         let score_percent = elo_to_percentage(elo[i], eloMin, eloMax);
-        result += '<div class="results-item"><p class="result-placement">' + (i+1) + '.</p><p class="result-item">' + list[i] + '</p><p class="result-percentage" style="background-color:' + colorscale[((score_percent * 100).toFixed(0) - 1)] + '">' + elo_percent_from_neutral(elo[i]) + '</p></div>';
+        result += '<div class="results-item"><p class="result-placement">' + (i+1) + '.</p><p class="result-item">' + list[i] + '</p><p class="result-percentage" style="background-color:' + colorscale[(elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(0)] + '">' + (elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(0) + '%</p></div>';
         
 
     };
@@ -328,14 +325,12 @@ function printMatrix(myArray){
 
 function createNewList(){
     /* newListValues = itemList.toString();
-    console.log(newListValues)
-    sanitizedList = sanitizeInputs(newListValues);
-    list = sanitizedList.split(","); */
+    console.log(newListValues)*/
 
+    
     list = itemList;
 
-    if (list.length > 2){
-        window.localStorage.setItem('sanitized-list', sanitizedList);
+    
 
         window.localStorage.setItem('list', JSON.stringify(list));
 
@@ -353,6 +348,7 @@ function createNewList(){
         document.getElementById("exercise").style.display = "block";
         document.getElementById("new-vote").style.display = "none";
 
+
         //Create table rows, 1 for each list item + 1 for the labels
         if (!window.localStorage.getItem('matrix')){
             for (let i=0; i<list.length; i++) {
@@ -366,17 +362,17 @@ function createNewList(){
                     totalVotes[i][j] = 0;
                 };
             };
-        };
-        //Create an equal amount of columns.
-        //Black out the corners
         
-        giveChoice();
-    };
+            //Create an equal amount of columns.
+            //Black out the corners
+            
+            giveChoice();
+        };
+
 };
 
 function giveChoice(){
     percentageRemainingVotes = sumTotalVotes / ( (list.length - 1)*(list.length/2));
-
 
     if (percentageRemainingVotes <= .999){
 /*         document.getElementById("votes-needed").innerHTML = '<p class="not-ready">Votes Needed: ' + sumTotalVotes + '/' +  (list.length - 1)*(list.length/2) + '</p>'; */
@@ -420,7 +416,8 @@ function giveChoice(){
 
     console.log(fifoRow);
 
-
+    document.getElementById("option1").blur
+    document.getElementById("option2").blur
     document.getElementById("choices").innerHTML = '<div class="buttons-to-press"><input type="button" class="choice-button" onclick="option(' + chooseRow +', ' + chooseColumn +')" name="option1" id="option1" value="' + list[chooseRow] + '">' + '<input type="button" class="choice-button" onclick="option(' + chooseColumn +', ' + chooseRow +')"" name="option2" id="option2" value="' + list[chooseColumn] + '"></div>';
 
 
@@ -557,7 +554,7 @@ function restart(){
     window.localStorage.removeItem('matrix');
     window.localStorage.removeItem('boolean-matrix');
     window.localStorage.removeItem('sum-total-votes');
-
+    window.localStorage.removeItem('list');
 
     matrix = [];
     booleanMatrix = [];
@@ -565,6 +562,9 @@ function restart(){
     list = [];
     elo = [];
     sumTotalVotes = 0;
+
+    itemList=[];
+    itemListHTMLPreview.innerHTML = '';
 
     document.getElementById("exercise").style.display = "none";
     document.getElementById("new-vote").style.display = "flex";

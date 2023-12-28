@@ -2,7 +2,7 @@
 <html manifest="cache.manifest" lang="en">
     <head>
         <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         
@@ -104,7 +104,12 @@
                         <p>50% Complete</p>
                     </div>
                 </div>
-                <div id="choices"></div>
+                <div id="choices">
+                    <div class="buttons-to-press">
+                        <input type="button" class="choice-button" onclick="option()" name="option1" id="option1" value="A">
+                        <input type="button" class="choice-button" onclick="option()" name="option2" id="option2" value="B">
+                    </div>
+                </div>
 
        <!--           -->
 
@@ -124,14 +129,22 @@
                 <button class="nav-part" id="submit" name="create-new-list-submit" id="create-new-list-submit" value="Submit">Start</button>
                 </form>
             </nav>
-            <div class="screen_create-list">
+
+            <div id="welcome-message" style="display:none">
+                <img src="assets/icon/welcome-svg.svg">
+                <h1>Decide</h1>
+                <p>Release 1</p>
+                <p>To start a vote, please enter at least 3 options using the textbox below.</p>
+            </div>
+
+            <div class="screen_create-list" style="display:block">
                 <div id="time-estimate"></div>
                 <div id="preview-voting-item-list"></div>
                 <div id="bottom"></div>
             </div>
             <form id="add-new-voting-item-submssion-field" onSubmit="return false;">
                 <input class="new-vote-textbox" name="add-new-voting-item" type="text" id="add-new-voting-item" placeholder="Add a choice...">
-                <input type="button" id="new-vote-add-button" value="add" onclick="appendVotingList()">
+                <input type="button" id="new-vote-add-button" value="+" onclick="appendVotingList()">
             </form>
         </div>
     
