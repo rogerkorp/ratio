@@ -44,7 +44,9 @@ let choiceA_minus_choiceB;
 let choiceB_minus_choiceA;
 let percentageRemainingVotes;
 
-let colorscale = ['#4d1713', '#4f1915', '#511b16', '#531d18', '#561f1a', '#58211c', '#5a231e', '#5c2520', '#5f2822', '#612a24', '#632c27', '#662f29', '#68312c', '#6a342f', '#6d3731', '#6f3934', '#723c37', '#743f3a', '#76423d', '#794540', '#7b4844', '#7e4b47', '#804e4b', '#83514e', '#855552', '#885856', '#8a5b5a', '#8d5f5e', '#8f6362', '#926667', '#946a6b', '#976e6f', '#997274', '#9c7679', '#9e7a7e', '#a07e83', '#a38288', '#a5868d', '#a78b92', '#aa8f98', '#ac949e', '#ae98a3', '#b09da9', '#b3a2af', '#b5a7b5', '#b7acbb', '#b9b1c2', '#bbb6c8', '#bcbbcf', '#bec0d6', '#bdc1d7', '#b9bdd3', '#b5bacf', '#b1b6cb', '#adb2c8', '#a9afc4', '#a5abc0', '#a2a8bc', '#9ea4b9', '#9aa1b5', '#979eb2', '#939aae', '#9097ab', '#8c94a7', '#8991a4', '#858ea1', '#828b9e', '#7f889a', '#7c8597', '#788294', '#757f91', '#727c8e', '#6f798b', '#6c7688', '#697385', '#667182', '#646e80', '#616b7d', '#5e697a', '#5b6677', '#596475', '#566172', '#545f70', '#515c6d', '#4f5a6b', '#4c5868', '#4a5566', '#485363', '#455161', '#434f5f', '#414d5d', '#3f4b5a', '#3d4858', '#3b4656', '#394454', '#374252', '#354150', '#333f4e', '#313d4c', '#2f3b4a'];
+let colorscale = ['#ffeee8', '#ffeee8', '#ffeee8', '#ffeee8', '#feeee9', '#feeee9', '#feeee9', '#feeee9', '#feeee9', '#feeee9', '#fdeeea', '#fdeeea', '#fdeeea', '#fdeeea', '#fdeeea', '#fdeeea', '#fdeeea', '#fcedeb', '#fcedeb', '#fcedeb', '#fcedeb', '#fcedeb', '#fcedeb', '#fbedeb', '#fbedec', '#fbedec', '#fbedec', '#fbedec', '#fbedec', '#fbedec', '#faeded', '#faeded', '#faeded', '#faeded', '#faeded', '#faeded', '#f9eded', '#f9edee', '#f9edee', '#f9edee', '#f9edee', '#f9edee', '#f8edee', '#f8edee', '#f8edef', '#f8edef', '#f8edef', '#f8edef', '#f8edef', '#f7edef', '#f7ecf0', '#f7ecf0', '#f7ecf0', '#f7ecf0', '#f7ecf0', '#f6ecf0', '#f6ecf0', '#f6ecf1', '#f6ecf1', '#f6ecf1', '#f6ecf1', '#f5ecf1', '#f5ecf1', '#f5ecf1', '#f5ecf2', '#f5ecf2', '#f5ecf2', '#f4ecf2', '#f4ecf2', '#f4ecf2', '#f4ecf3', '#f4ecf3', '#f4ecf3', '#f3ecf3', '#f3ecf3', '#f3ecf3', '#f3ecf3', '#f3ecf4', '#f3ecf4', '#f2ecf4', '#f2ecf4', '#f2ecf4', '#f2ecf4', '#f2ecf4', '#f2ebf5', '#f2ebf5', '#f1ebf5', '#f1ebf5', '#f1ebf5', '#f1ebf5', '#f1ebf6', '#f1ebf6', '#f0ebf6', '#f0ebf6', '#f0ebf6', '#f0ebf6', '#f0ebf6', '#f0ebf7', '#efebf7', '#efebf7', '#efebf7'];
+let darkcolorscale = ['#972906', '#962908', '#962909', '#95290b', '#94290d', '#942a0e', '#932a10', '#932a11', '#922a12', '#912a13', '#912a15', '#902a16', '#8f2a17', '#8f2a18', '#8e2a19', '#8d2a1a', '#8d2b1c', '#8c2b1d', '#8b2b1e', '#8b2b1f', '#8a2b20', '#892b21', '#892b22', '#882b23', '#872b24', '#872b25', '#862b26', '#852b27', '#852c28', '#842c29', '#832c29', '#832c2a', '#822c2b', '#812c2c', '#802c2d', '#802c2e', '#7f2c2f', '#7e2c30', '#7e2c31', '#7d2c32', '#7c2c33', '#7b2c34', '#7b2d35', '#7a2d35', '#792d36', '#782d37', '#782d38', '#772d39', '#762d3a', '#752d3b', '#742d3c', '#742d3d', '#732d3d', '#722d3e', '#712d3f', '#702d40', '#702d41', '#6f2e42', '#6e2e43', '#6d2e44', '#6c2e45', '#6b2e45', '#6b2e46', '#6a2e47', '#692e48', '#682e49', '#672e4a', '#662e4b', '#652e4c', '#642e4d', '#632e4d', '#622e4e', '#612e4f', '#602e50', '#5f2f51', '#5e2f52', '#5d2f53', '#5c2f54', '#5b2f54', '#5a2f55', '#592f56', '#582f57', '#572f58', '#562f59', '#552f5a', '#542f5b', '#522f5c', '#512f5c', '#502f5d', '#4f2f5e', '#4d2f5f', '#4c2f60', '#4b3061', '#4a3062', '#483063', '#473064', '#453064', '#443065', '#423066', '#413067', '#3f3068'];
+
 
 let elo = [];
 
@@ -74,10 +76,10 @@ function appendVotingList(){
 
     //Step 5: Update the HTML to reflect the current list
         for (let i=0; i<itemList.length; i++){
-            itemListHTMLText += '<li class="itemListItem"><div class="listItemText"><span class="list-item-number">' + (i+1) + '.</span> ' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>'; //Button allows you to delete that specific list item.
+            itemListHTMLText += '<li class="itemListItem"><div class="listItemText">' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>'; //Button allows you to delete that specific list item.
         }
 
-        itemListHTMLPreview.innerHTML = '<ul class="itemList">' + itemListHTMLText +'</ul>';
+        itemListHTMLPreview.innerHTML = '<ul class="itemList">' + itemListHTMLText +'<div id="bottom"></div></ul>';
         clearCurrentValues();
 
 
@@ -133,6 +135,7 @@ function spliceVotingList(listItemNumber){
         itemListHTMLText += '<li class="itemListItem"><div class="listItemText"><span class="list-item-number">' + (i+1) + '.</span> ' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>';
     }
     itemListHTMLPreview.innerHTML = '<ol class="itemList">' + itemListHTMLText +'</ol>';
+
 
     //Step 4: Update Style Rules to Reflect Current System Status
 
@@ -347,11 +350,11 @@ function printMatrix(myArray){
     let eloMin = Math.min(...elo)
 
     let result = "";
-    result += '<div class="results-item" id="results-listing-header"><p class="result-placement">Place</p><p class="result-item">Item</p><p class="result-item">Score</p></div>';
+    result += '<div class="results-item" id="results-listing-header"><p class="result-item">Place</p><p class="result-item">Item</p><p class="result-item" id="result-header-score">Score</p></div>';
 
     for (let i=0; i<myArray.length; i++) {
         let score_percent = elo_to_percentage(elo[i], eloMin, eloMax);
-        result += '<div class="results-item"><p class="result-placement">' + (i+1) + '.</p><p class="result-item">' + list[i] + '</p><p class="result-percentage" style="background-color:' + colorscale[((elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(0)-1)] + '">' + (elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(1) + '%</p></div>';
+        result += '<div class="results-item"><p class="result-placement">' + (i+1) + '. </p><p class="result-item">' + list[i] + '</p><p class="result-percentage">' + (elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(1) + '%</p></div>';
         
 
     };
