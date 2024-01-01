@@ -44,7 +44,7 @@ let choiceA_minus_choiceB;
 let choiceB_minus_choiceA;
 let percentageRemainingVotes;
 
-let colorscale = ['#ffeee8', '#ffeee8', '#ffeee8', '#ffeee8', '#feeee9', '#feeee9', '#feeee9', '#feeee9', '#feeee9', '#feeee9', '#fdeeea', '#fdeeea', '#fdeeea', '#fdeeea', '#fdeeea', '#fdeeea', '#fdeeea', '#fcedeb', '#fcedeb', '#fcedeb', '#fcedeb', '#fcedeb', '#fcedeb', '#fbedeb', '#fbedec', '#fbedec', '#fbedec', '#fbedec', '#fbedec', '#fbedec', '#faeded', '#faeded', '#faeded', '#faeded', '#faeded', '#faeded', '#f9eded', '#f9edee', '#f9edee', '#f9edee', '#f9edee', '#f9edee', '#f8edee', '#f8edee', '#f8edef', '#f8edef', '#f8edef', '#f8edef', '#f8edef', '#f7edef', '#f7ecf0', '#f7ecf0', '#f7ecf0', '#f7ecf0', '#f7ecf0', '#f6ecf0', '#f6ecf0', '#f6ecf1', '#f6ecf1', '#f6ecf1', '#f6ecf1', '#f5ecf1', '#f5ecf1', '#f5ecf1', '#f5ecf2', '#f5ecf2', '#f5ecf2', '#f4ecf2', '#f4ecf2', '#f4ecf2', '#f4ecf3', '#f4ecf3', '#f4ecf3', '#f3ecf3', '#f3ecf3', '#f3ecf3', '#f3ecf3', '#f3ecf4', '#f3ecf4', '#f2ecf4', '#f2ecf4', '#f2ecf4', '#f2ecf4', '#f2ecf4', '#f2ebf5', '#f2ebf5', '#f1ebf5', '#f1ebf5', '#f1ebf5', '#f1ebf5', '#f1ebf6', '#f1ebf6', '#f0ebf6', '#f0ebf6', '#f0ebf6', '#f0ebf6', '#f0ebf6', '#f0ebf7', '#efebf7', '#efebf7', '#efebf7'];
+let colorscale = ['#cb4064', '#c94064', '#c73f64', '#c53f64', '#c33f64', '#c13f63', '#bf3e63', '#bd3e63', '#bb3e63', '#ba3e63', '#b83d63', '#b63d63', '#b43d63', '#b23d63', '#b03c62', '#ae3c62', '#ac3c62', '#aa3c62', '#a83b62', '#a63b62', '#a43b62', '#a23b62', '#a03a62', '#9e3a61', '#9c3a61', '#9b3a61', '#993961', '#973961', '#953961', '#933861', '#913861', '#8f3861', '#8d3860', '#8b3760', '#893760', '#873760', '#853760', '#833660', '#813660', '#7f3660', '#7d3660', '#7b355f', '#7a355f', '#78355f', '#76355f', '#74345f', '#72345f', '#70345f', '#6e345f', '#6c335f', '#6a335f', '#68335e', '#66325e', '#64325e', '#62325e', '#60325e', '#5e315e', '#5c315e', '#5a315e', '#59315e', '#57305d', '#55305d', '#53305d', '#51305d', '#4f2f5d', '#4d2f5d', '#4b2f5d', '#492f5d', '#472e5d', '#452e5c', '#432e5c', '#412e5c', '#3f2d5c', '#3d2d5c', '#3b2d5c', '#3a2d5c', '#382c5c', '#362c5c', '#342c5b', '#322b5b', '#302b5b', '#2e2b5b', '#2c2b5b', '#2a2a5b', '#282a5b', '#262a5b', '#242a5b', '#22295a', '#20295a', '#1e295a', '#1c295a', '#1a285a', '#19285a', '#17285a', '#15285a', '#13275a', '#112759', '#0f2759', '#0d2759', '#0b2659', '#092659'];
 let darkcolorscale = ['#972906', '#962908', '#962909', '#95290b', '#94290d', '#942a0e', '#932a10', '#932a11', '#922a12', '#912a13', '#912a15', '#902a16', '#8f2a17', '#8f2a18', '#8e2a19', '#8d2a1a', '#8d2b1c', '#8c2b1d', '#8b2b1e', '#8b2b1f', '#8a2b20', '#892b21', '#892b22', '#882b23', '#872b24', '#872b25', '#862b26', '#852b27', '#852c28', '#842c29', '#832c29', '#832c2a', '#822c2b', '#812c2c', '#802c2d', '#802c2e', '#7f2c2f', '#7e2c30', '#7e2c31', '#7d2c32', '#7c2c33', '#7b2c34', '#7b2d35', '#7a2d35', '#792d36', '#782d37', '#782d38', '#772d39', '#762d3a', '#752d3b', '#742d3c', '#742d3d', '#732d3d', '#722d3e', '#712d3f', '#702d40', '#702d41', '#6f2e42', '#6e2e43', '#6d2e44', '#6c2e45', '#6b2e45', '#6b2e46', '#6a2e47', '#692e48', '#682e49', '#672e4a', '#662e4b', '#652e4c', '#642e4d', '#632e4d', '#622e4e', '#612e4f', '#602e50', '#5f2f51', '#5e2f52', '#5d2f53', '#5c2f54', '#5b2f54', '#5a2f55', '#592f56', '#582f57', '#572f58', '#562f59', '#552f5a', '#542f5b', '#522f5c', '#512f5c', '#502f5d', '#4f2f5e', '#4d2f5f', '#4c2f60', '#4b3061', '#4a3062', '#483063', '#473064', '#453064', '#443065', '#423066', '#413067', '#3f3068'];
 
 
@@ -79,7 +79,7 @@ function appendVotingList(){
             itemListHTMLText += '<li class="itemListItem"><div class="listItemText">' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>'; //Button allows you to delete that specific list item.
         }
 
-        itemListHTMLPreview.innerHTML = '<ul class="itemList">' + itemListHTMLText +'<div id="bottom"></div></ul>';
+        itemListHTMLPreview.innerHTML = '<ul class="itemList">' + itemListHTMLText + '<div id="bottom"></div></ul>';
         clearCurrentValues();
 
 
@@ -132,9 +132,9 @@ function spliceVotingList(listItemNumber){
 
     //Step 3: Rebuilds the HTML Text to reflect the current list
     for (let i=0; i<itemList.length; i++){
-        itemListHTMLText += '<li class="itemListItem"><div class="listItemText"><span class="list-item-number">' + (i+1) + '.</span> ' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>';
+        itemListHTMLText += '<li class="itemListItem"><div class="listItemText">' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>';
     }
-    itemListHTMLPreview.innerHTML = '<ol class="itemList">' + itemListHTMLText +'</ol>';
+    itemListHTMLPreview.innerHTML = '<ul class="itemList">' + itemListHTMLText +'<div id="bottom"></div></ul>';
 
 
     //Step 4: Update Style Rules to Reflect Current System Status
@@ -302,6 +302,39 @@ function elo_percent_from_neutral(elo){
         reported_difference = '0%';
     }
     return reported_difference;
+};
+
+function elo_color_percent_from_neutral(elo){
+    let neutral_elo = 1000;
+    let percent_from_neutral = elo / neutral_elo;
+    let color;
+    if (percent_from_neutral <= 1.0){
+        /* Negative Difference */
+        color = "#00255D"
+    } else if (percent_from_neutral >= 1.0){
+        /* Positive Difference */
+        color = "#00255D"
+    } else if (percent_from_neutral == 1.0){
+        color = "#00255D"
+    }
+    return color;
+};
+
+function color_for_score(score){
+    let colors = ['#CB4064', '#E36F3D', '#ad5e3a', '#3b7f55', '#092659'];
+    let bgcolor;
+    if (score >= 80){
+        bgcolor = colors[4];
+    } else if ((score >= 60) && (score <= 80)){
+        bgcolor = colors[3];
+    } else if ((score >= 40) && (score <= 60)){
+        bgcolor = colors[2];
+    } else if ((score >= 20) && (score <= 40)){
+        bgcolor = colors[1];
+    } else if (score <= 20){
+        bgcolor = colors[0];
+    }
+    return bgcolor;
 }
 
 
@@ -354,7 +387,7 @@ function printMatrix(myArray){
 
     for (let i=0; i<myArray.length; i++) {
         let score_percent = elo_to_percentage(elo[i], eloMin, eloMax);
-        result += '<div class="results-item"><p class="result-placement">' + (i+1) + '. </p><p class="result-item">' + list[i] + '</p><p class="result-percentage">' + (elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(1) + '%</p></div>';
+        result += '<div class="results-item"><p class="result-placement">' + (i+1) + '. </p><p class="result-item">' + list[i] + '</p><p class="result-percentage" style="background-color:' + colorscale[((elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(0))] + ';">' + (elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(1) + '%</p></div>';
         
 
     };

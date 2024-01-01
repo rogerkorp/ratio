@@ -2,11 +2,11 @@
 
 :root{
     --white: #ffffff;
-    --background-color: #efebf7;
-    --primary-text: #3f3068; /*5486A2*/
-    --cancel-color: #f97a52;
+    --background-color: #faf2e5;
+    --primary-text: #00255D; /*5486A2*/
+    --cancel-color: #dc2e63;
     --seconary-accent: #53c6bf;
-    --null: #e1dced;
+    --null: #bce6f4;
 
 
 
@@ -305,9 +305,10 @@ nav button{
 
 .itemList{
     margin-top: auto;
+    margin-bottom: 0;
     padding-left: 2em;
     padding-top: 2em;
-    padding-bottom: 5.25em;
+    padding-bottom: 6.25em;
 
 }
 
@@ -334,11 +335,6 @@ nav button{
     cursor: pointer;
     padding: 1em;
     background-color: var(--white);
-}
-
-#bottom{
-    height: 1em;
-
 }
 
 .exercise{
@@ -440,7 +436,7 @@ nav button{
     margin: 1em;
     padding: .75em;
     border-radius: 5em;
-    border: 2px solid var(--null);  
+    border: 2px solid var(--primary-text);  
     color: var(--primary-text);
 }
 
