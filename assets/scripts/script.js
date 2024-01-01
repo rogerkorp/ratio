@@ -74,16 +74,42 @@ function appendVotingList(){
 
     //Step 5: Update the HTML to reflect the current list
         for (let i=0; i<itemList.length; i++){
-            itemListHTMLText += '<li class="itemListItem"><div class="listItemText">' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>'; //Button allows you to delete that specific list item.
+            itemListHTMLText += '<li class="itemListItem"><div class="listItemText"><span class="list-item-number">' + (i+1) + '.</span> ' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>'; //Button allows you to delete that specific list item.
         }
 
         itemListHTMLPreview.innerHTML = '<ul class="itemList">' + itemListHTMLText +'</ul>';
         clearCurrentValues();
 
+
+
+        if (itemList.length >= 3){
+            document.getElementById("submit").style.display = 'flex';
+            document.getElementById("disable-submit").style.display = 'none';
+        }
+
+
         document.getElementById('bottom').scrollIntoView();
+
+        if (itemList.length > 0){
+            document.getElementById("welcome-message").style.display = 'none';
+        } else {
+            document.getElementById("welcome-message").style.display = 'flex';
+        }
+
 
 }
 
+
+function helpToggle(){
+    help = document.getElementById("help");
+    console.log("Help Toggle Triggered")
+    
+    if (help.style.display == 'flex'){
+        help.style.display = 'none';
+    } else if (help.style.display == 'none'){
+        help.style.display = 'flex';
+    };
+}
 
 
 //On average, it takes about 5 seconds per vote.
@@ -104,9 +130,22 @@ function spliceVotingList(listItemNumber){
 
     //Step 3: Rebuilds the HTML Text to reflect the current list
     for (let i=0; i<itemList.length; i++){
-        itemListHTMLText += '<li class="itemListItem"><div class="listItemText">' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>';
+        itemListHTMLText += '<li class="itemListItem"><div class="listItemText"><span class="list-item-number">' + (i+1) + '.</span> ' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>';
     }
-    itemListHTMLPreview.innerHTML = '<ol class="itemList">' + itemListHTMLText +'</ol>'
+    itemListHTMLPreview.innerHTML = '<ol class="itemList">' + itemListHTMLText +'</ol>';
+
+    //Step 4: Update Style Rules to Reflect Current System Status
+
+    if (itemList.length == 0){
+        document.getElementById("welcome-message").style.display = 'flex';
+    } else {
+        document.getElementById("welcome-message").style.display = 'none';
+    };
+
+    if (itemList.length <= 2){
+        document.getElementById("submit").style.display = 'none';
+        document.getElementById("disable-submit").style.display = 'flex';
+    }
 
 
 }
@@ -308,11 +347,11 @@ function printMatrix(myArray){
     let eloMin = Math.min(...elo)
 
     let result = "";
-    result += '<div class="results-item"><p class="result-placement">Place</p><p class="result-item">Item</p><p class="result-item">Margin</p></div>';
+    result += '<div class="results-item" id="results-listing-header"><p class="result-placement">Place</p><p class="result-item">Item</p><p class="result-item">Score</p></div>';
 
     for (let i=0; i<myArray.length; i++) {
         let score_percent = elo_to_percentage(elo[i], eloMin, eloMax);
-        result += '<div class="results-item"><p class="result-placement">' + (i+1) + '.</p><p class="result-item">' + list[i] + '</p><p class="result-percentage" style="background-color:' + colorscale[(elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(0)] + '">' + (elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(0) + '%</p></div>';
+        result += '<div class="results-item"><p class="result-placement">' + (i+1) + '.</p><p class="result-item">' + list[i] + '</p><p class="result-percentage" style="background-color:' + colorscale[((elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(0)-1)] + '">' + (elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(1) + '%</p></div>';
         
 
     };
@@ -326,6 +365,7 @@ function printMatrix(myArray){
 function createNewList(){
     /* newListValues = itemList.toString();
     console.log(newListValues)*/
+    if (itemList.length >= 3){
 
     
     list = itemList;
@@ -368,7 +408,7 @@ function createNewList(){
             
             giveChoice();
         };
-
+    };
 };
 
 function giveChoice(){
@@ -379,8 +419,8 @@ function giveChoice(){
         document.getElementById("progress-bar").innerHTML = '<progress id="vote-progress" value="' + sumTotalVotes + '" max="' + (list.length - 1)*(list.length/2) + '"></progress> <div class="progress-bar-text"><p>' + (((list.length - 1)*(list.length/2)) - sumTotalVotes) + ' Votes Needed</p><p>' + Math.round(percentageRemainingVotes * 100) + '% Complete</p></div>';
     } else if (percentageRemainingVotes >= .999){
         document.getElementById("progress-bar").innerHTML = '<progress id="vote-progress" value="' + sumTotalVotes + '" max="' + (list.length - 1)*(list.length/2) + '"></progress> <div class="progress-bar-text"><p>' + (sumTotalVotes) + ' Total Votes</p><p>100% Complete</p></div>';
-        document.getElementById("show-results").style.display = 'flex';
         document.getElementById("show-results-null").style.display = 'none';
+        document.getElementById("show-results").style.display = 'flex';
     }
 
     console.log(totalVotes)
@@ -539,7 +579,6 @@ function showResults(){
 
     document.getElementById("list-item-matrix").innerHTML = printMatrix(matrix);
     document.getElementById("winner-result").innerHTML = list[0];
-    document.getElementById("winner-preference").innerHTML = elo_percent_from_neutral(elo[0]) + " Margin of Preference"
 }
 
 function keepVoting(){
@@ -569,7 +608,16 @@ function restart(){
     document.getElementById("exercise").style.display = "none";
     document.getElementById("new-vote").style.display = "flex";
 
-    document.getElementById("show-results").style.display = 'none';
-    document.getElementById("show-results-null").style.display = 'flex';
     document.getElementById("results").style.display = "none";
+
+
+    document.getElementById("submit").style.display = 'none';
+    document.getElementById("disable-submit").style.display = 'flex';
+
+    document.getElementById("welcome-message").style.display = 'flex';
+
+    document.getElementById("show-results-null").style.display = 'flex';
+    document.getElementById("show-results").style.display = 'none';
+
+
 }
