@@ -4,7 +4,7 @@ let itemList = []; //Stores all of the items you are voting on.
 
 let newItem; //Temporarily stores the new item you want to add to your list.
 let itemListHTMLText = ''; //The variable that stores the full string for the HTML Preview on the New Vote Screen
-let itemListHTMLPreview =  document.getElementById('preview-voting-item-list'); //This variable actually updates the inner HTML
+let itemListHTMLPreview =  document.getElementById('create_list_preview_items'); //This variable actually updates the inner HTML
 
 
 let newListValues;
@@ -56,7 +56,7 @@ let elo = [];
 function appendVotingList(){ 
     
     //Step 1: Get the value of the new item
-        newItem = document.getElementById('add-new-voting-item').value;
+        newItem = document.getElementById('create_list_textbox_form_input_id').value;
 
     //Step 2: Check to see if the value is not blank
         if (newItem == ''){
@@ -76,33 +76,33 @@ function appendVotingList(){
 
     //Step 5: Update the HTML to reflect the current list
         for (let i=0; i<itemList.length; i++){
-            itemListHTMLText += '<li class="itemListItem"><div class="listItemText">' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>'; //Button allows you to delete that specific list item.
+            itemListHTMLText += '<li class="create_list_preview_items_data_unit"><div class="create_list_preview_items_data_unit_text">' + itemList[i] + '</div><button type="button" class="create_list_preview_items_data_unit_delete" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>'; //Button allows you to delete that specific list item.
         }
 
-        itemListHTMLPreview.innerHTML = '<ul class="itemList">' + itemListHTMLText + '<div id="bottom"></div></ul>';
+        itemListHTMLPreview.innerHTML = '<ul class="create_list_preview_items_data">' + itemListHTMLText + '<div id="create_list_preview_bottom"></div></ul>';
         clearCurrentValues();
 
 
 
         if (itemList.length >= 3){
-            document.getElementById("submit").style.display = 'flex';
-            document.getElementById("disable-submit").style.display = 'none';
+            document.getElementById("create_list_start_vote_form_submit_enabled").style.display = 'flex';
+            document.getElementById("create_list_start_vote_form_submit_disabled").style.display = 'none';
         }
 
 
-        document.getElementById('bottom').scrollIntoView();
+        document.getElementById('create_list_preview_bottom').scrollIntoView();
 
         if (itemList.length > 0){
-            document.getElementById("welcome-message").style.display = 'none';
+            document.getElementById("create_list_welcome_message").style.display = 'none';
         } else {
-            document.getElementById("welcome-message").style.display = 'flex';
+            document.getElementById("create_list_welcome_message").style.display = 'flex';
         }
 
 
 }
 
 
-function helpToggle(){
+function toggle_help(){
     help = document.getElementById("help");
     console.log("Help Toggle Triggered")
     
@@ -117,7 +117,7 @@ function helpToggle(){
 //On average, it takes about 5 seconds per vote.
 
 function clearCurrentValues(){
-    document.getElementById('add-new-voting-item').value = '';
+    document.getElementById('create_list_textbox_form_input_id').value = '';
 }
 
 
@@ -132,22 +132,22 @@ function spliceVotingList(listItemNumber){
 
     //Step 3: Rebuilds the HTML Text to reflect the current list
     for (let i=0; i<itemList.length; i++){
-        itemListHTMLText += '<li class="itemListItem"><div class="listItemText">' + itemList[i] + '</div><button type="button" class="removeListItemButton" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>';
+        itemListHTMLText += '<li class="create_list_preview_items_data_unit"><div class="create_list_preview_items_data_unit_text">' + itemList[i] + '</div><button type="button" class="create_list_preview_items_data_unit_delete" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>';
     }
-    itemListHTMLPreview.innerHTML = '<ul class="itemList">' + itemListHTMLText +'<div id="bottom"></div></ul>';
+    itemListHTMLPreview.innerHTML = '<ul class="create_list_preview_items_data">' + itemListHTMLText +'<div id="create_list_preview_bottom"></div></ul>';
 
 
     //Step 4: Update Style Rules to Reflect Current System Status
 
     if (itemList.length == 0){
-        document.getElementById("welcome-message").style.display = 'flex';
+        document.getElementById("create_list_welcome_message").style.display = 'flex';
     } else {
-        document.getElementById("welcome-message").style.display = 'none';
+        document.getElementById("create_list_welcome_message").style.display = 'none';
     };
 
     if (itemList.length <= 2){
-        document.getElementById("submit").style.display = 'none';
-        document.getElementById("disable-submit").style.display = 'flex';
+        document.getElementById("create_list_start_vote_form_submit_enabled").style.display = 'none';
+        document.getElementById("create_list_start_vote_form_submit_disabled").style.display = 'flex';
     }
 
 
@@ -155,7 +155,7 @@ function spliceVotingList(listItemNumber){
 
 
 window.onkeyup = function(event) {
-    const el = document.querySelector('.new-vote-textbox');
+    const el = document.querySelector('.create_list_textbox_form_input');
     if (el === document.activeElement){
         if (event.which == 13) {
             appendVotingList();
@@ -200,7 +200,7 @@ function readData() {
                 sumTotalVotes = 0;
             };
 
-            createNewList();
+            create_list_start_vote();
 
         }
 
@@ -213,7 +213,7 @@ function readData() {
 
 
 
-let form = document.getElementById("create-new-list");
+let form = document.getElementById("create_list_start_vote_form");
 function handleForm(event) { 
     event.preventDefault(); 
 } 
@@ -398,34 +398,22 @@ function printMatrix(myArray){
 
 
 
-function createNewList(){
-    /* newListValues = itemList.toString();
-    console.log(newListValues)*/
+function create_list_start_vote(){
+
     if (itemList.length >= 3){
 
-    
-    list = itemList;
-
-    
+        list = itemList;
 
         window.localStorage.setItem('list', JSON.stringify(list));
 
         fifoRow = Array((list.length) - 2);
         fifoColumn = Array((list.length) - 2);
-
         totalRounds = ((list.length) * (list.length)) - (list.length);
         idealAverage = 1 / totalRounds;
-
-
         console.log(totalRounds);
         console.log((idealAverage)*100 + "%");
-
-
         document.getElementById("exercise").style.display = "block";
-        document.getElementById("new-vote").style.display = "none";
-
-
-        //Create table rows, 1 for each list item + 1 for the labels
+        document.getElementById("create_list").style.display = "none";
         if (!window.localStorage.getItem('matrix')){
             for (let i=0; i<list.length; i++) {
                 matrix[i] = [];
@@ -438,11 +426,8 @@ function createNewList(){
                     totalVotes[i][j] = 0;
                 };
             };
-        
-            //Create an equal amount of columns.
-            //Black out the corners
-            
-            giveChoice();
+                
+        giveChoice();
         };
     };
 };
@@ -642,15 +627,15 @@ function restart(){
     itemListHTMLPreview.innerHTML = '';
 
     document.getElementById("exercise").style.display = "none";
-    document.getElementById("new-vote").style.display = "flex";
+    document.getElementById("create_list").style.display = "flex";
 
     document.getElementById("results").style.display = "none";
 
 
-    document.getElementById("submit").style.display = 'none';
-    document.getElementById("disable-submit").style.display = 'flex';
+    document.getElementById("create_list_start_vote_form_submit_enabled").style.display = 'none';
+    document.getElementById("create_list_start_vote_form_submit_disabled").style.display = 'flex';
 
-    document.getElementById("welcome-message").style.display = 'flex';
+    document.getElementById("create_list_welcome_message").style.display = 'flex';
 
     document.getElementById("show-results-null").style.display = 'flex';
     document.getElementById("show-results").style.display = 'none';
