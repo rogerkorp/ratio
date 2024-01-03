@@ -50,6 +50,48 @@ let darkcolorscale = ['#972906', '#962908', '#962909', '#95290b', '#94290d', '#9
 
 let elo = [];
 
+function readData() {
+    console.log("readData called");
+  
+    // Does this browser support local storage?
+    if (typeof (Storage) !== "undefined") {
+        console.log("Browser supports local storage");
+    
+        if (window.localStorage.getItem('matrix')){
+          /*   let lastList = window.localStorage.getItem('sanitized-list');
+            document.getElementById("write-new-list").value = lastList; */
+
+            
+            itemList = JSON.parse(window.localStorage.getItem('list'));
+            matrix = JSON.parse(window.localStorage.getItem('matrix'));
+            booleanMatrix = JSON.parse(window.localStorage.getItem('boolean-matrix'));
+            elo = JSON.parse(window.localStorage.getItem('elo'));
+            totalVotes = JSON.parse(window.localStorage.getItem('votes'));
+            sumTotalVotes = JSON.parse(window.localStorage.getItem('sum-total-votes'));
+
+            // console.log(itemList);
+            // console.log(matrix);
+            // console.log(booleanMatrix);
+            // console.log(elo);
+            // console.log(totalVotes);
+            // console.log(sumTotalVotes)
+
+
+            if (window.localStorage.getItem('sum-total-votes') == null){
+                sumTotalVotes = 0;
+            };
+
+
+            create_list_start_vote();
+
+        }
+
+    } else {
+      // Sorry! No Web Storage support..
+      alert('This browser does NOT support local storage');
+    }
+  };
+
 /* CREATING THE ITEM LIST */
 
 
@@ -99,8 +141,7 @@ function appendVotingList(){
         }
 
 
-}
-
+};
 
 function toggle_help(){
     help = document.getElementById("help");
@@ -111,15 +152,12 @@ function toggle_help(){
     } else if (help.style.display == 'none'){
         help.style.display = 'flex';
     };
-}
+};
 
-
-//On average, it takes about 5 seconds per vote.
 
 function clearCurrentValues(){
     document.getElementById('create_list_textbox_form_input_id').value = '';
-}
-
+};
 
 /* REMOVING ITEMS FROM THE ITEM LIST  */
 
@@ -151,8 +189,7 @@ function spliceVotingList(listItemNumber){
     }
 
 
-}
-
+};
 
 window.onkeyup = function(event) {
     const el = document.querySelector('.create_list_textbox_form_input');
@@ -162,65 +199,19 @@ window.onkeyup = function(event) {
 
         }
     }
-}
-
-
-//OLD CODE GOES HERE
-
-
-function readData() {
-    console.log("readData called");
-  
-    // Does this browser support local storage?
-    if (typeof (Storage) !== "undefined") {
-        console.log("Browser supports local storage");
-    
-        if (window.localStorage.getItem('matrix')){
-          /*   let lastList = window.localStorage.getItem('sanitized-list');
-            document.getElementById("write-new-list").value = lastList; */
-
-            
-            itemList = JSON.parse(window.localStorage.getItem('list'));
-            matrix = JSON.parse(window.localStorage.getItem('matrix'));
-            booleanMatrix = JSON.parse(window.localStorage.getItem('boolean-matrix'));
-            elo = JSON.parse(window.localStorage.getItem('elo'));
-            totalVotes = JSON.parse(window.localStorage.getItem('votes'));
-            sumTotalVotes = JSON.parse(window.localStorage.getItem('sum-total-votes'));
-
-
-            console.log(itemList);
-            console.log(matrix);
-            console.log(booleanMatrix);
-            console.log(elo);
-            console.log(totalVotes);
-            console.log(sumTotalVotes)
-
-
-            if (window.localStorage.getItem('sum-total-votes') == null){
-                sumTotalVotes = 0;
-            };
-
-            create_list_start_vote();
-
-        }
-
-    } else {
-      // Sorry! No Web Storage support..
-      alert('This browser does NOT support local storage');
-    }
-  }
-  
+};
 
 let form = document.getElementById("create_list_start_vote_form");
 function handleForm(event) { 
     event.preventDefault(); 
-} 
+};
+
 form.addEventListener('submit', handleForm);
 
 function sanitizeInputs(str){
     str = str.replace(/[^a-z0-9áéíóúñü \,-]/gim,"");
     return str.trim();
-}
+};
 
 function sumArrays(array){
     sum = 0;
@@ -228,7 +219,7 @@ function sumArrays(array){
         sum += array[i];
     }
     return sum;
-}
+};
 
 function findK(votes, rating){
     let k;
@@ -247,8 +238,7 @@ function getExpectedScore(primary, secondary){
     let difference = secondary - primary;
     let chances = 1/(1+10**((difference)/1000));
     return chances;
-}
-
+};
 
 function shuffle(array){
     let flattenedArray = array.flat();
@@ -266,8 +256,7 @@ function shuffle(array){
     }
   
     return flattenedArray;
-}
-
+};
 
 function sortResults(elo, name){
         // Create a map to store the relationships between elements in arr1 and arr2
@@ -277,14 +266,13 @@ function sortResults(elo, name){
         // Sort the first array (arr1) based on the order of elements in the sorted arr2
         name.sort((a, b) => mapping.get(b) - mapping.get(a));
         return [elo, name]; // Return both sorted arrays
-}
+};
 
 function elo_to_percentage(elo, min, max){
     let elo_difference = max - min;
     let percentage = (elo - min) / elo_difference;
     return percentage;
-}
-
+};
 
 function elo_percent_from_neutral(elo){
     let neutral_elo = 1000;
@@ -333,7 +321,7 @@ function color_for_score(score){
         bgcolor = colors[0];
     }
     return bgcolor;
-}
+};
 
 
 function percentage_to_grade(percentage){
@@ -391,10 +379,7 @@ function printMatrix(myArray){
     };
 
     return result;
-}
-
-
-
+};
 
 function create_list_start_vote(){
 
@@ -412,7 +397,10 @@ function create_list_start_vote(){
         console.log((idealAverage)*100 + "%");
         document.getElementById("vote").style.display = "block";
         document.getElementById("create_list").style.display = "none";
+
+        
         if (!window.localStorage.getItem('matrix')){
+            
             for (let i=0; i<list.length; i++) {
                 matrix[i] = [];
                 booleanMatrix[i] = []
@@ -424,13 +412,16 @@ function create_list_start_vote(){
                     totalVotes[i][j] = 0;
                 };
             };
-                
-        giveChoice();
+
         };
+
+        giveChoice();
+
     };
 };
 
 function giveChoice(){
+
     percentageRemainingVotes = sumTotalVotes / ( (list.length - 1)*(list.length/2));
 
     if (percentageRemainingVotes <= .999){
@@ -442,13 +433,12 @@ function giveChoice(){
         document.getElementById("vote_results_enabled").style.display = 'flex';
     }
 
-    console.log(totalVotes)
-
-
     // Drawing criteria:
     // 1. The two choices have to be unique (x cannot be compared to x)
     // 2. Of the two choices, one must not have been drawn in the prior round. (if the last round was between x & y, then this round cannot have both x or y as choices. It must be one or the other. )
     // 3. The pair must have been chosen less than frequently.
+
+
 
     do{
         do {
@@ -472,8 +462,6 @@ function giveChoice(){
 
     fifoRow.shift();
     fifoRow.push(chooseColumn); */
-
-    console.log(fifoRow);
 
     document.getElementById("vote_main_inputs_dynamic_button_option1").blur
     document.getElementById("vote_main_inputs_dynamic_button_option2").blur
@@ -503,11 +491,9 @@ function giveChoice(){
     choiceA_K = findK(choiceA_TotalVotes, choiceA_Rating);
     choiceB_K = findK(choiceB_TotalVotes, choiceB_Rating);
 
-}
-
+};
 
 function option(chosen, rejected){
-
 
     
 
@@ -570,16 +556,16 @@ function option(chosen, rejected){
     sumTotalVotes += 1;
 
     window.localStorage.setItem('sum-total-votes', sumTotalVotes);
+    
 
     giveChoice();
     // document.getElementById("results_main_data_list").innerHTML = printMatrix(matrix);
+
 
     window.localStorage.setItem('elo', JSON.stringify(elo));
     window.localStorage.setItem('votes', JSON.stringify(totalVotes));
     window.localStorage.setItem('matrix', JSON.stringify(matrix));
     window.localStorage.setItem('boolean-matrix', JSON.stringify(booleanMatrix));
-
-
 /* 
     document.getElementById("results-list").innerHTML = " "
 
@@ -589,20 +575,18 @@ function option(chosen, rejected){
 
 };
 
-
 function showResults(){
     document.getElementById("vote").style.display = "none";
     document.getElementById("results").style.display = "flex";
 
     document.getElementById("results_main_data_list").innerHTML = printMatrix(matrix);
     document.getElementById("results_main_favorite_name").innerHTML = list[0];
-}
+};
 
 function keepVoting(){
     document.getElementById("vote").style.display = "block";
     document.getElementById("results").style.display = "none";  
-}
-
+};
 
 function restart(){
     window.localStorage.removeItem('elo');
@@ -637,4 +621,4 @@ function restart(){
     document.getElementById("vote_results_enabled").style.display = 'none';
 
 
-}
+};

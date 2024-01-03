@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# version 008
+# version 009
 # Include the version number so that the web app will know a new varient was created.
 # It's like updating a native app, but with javascript.
 
@@ -48,3 +48,9 @@ assets/icon/ipad/167.png
 assets/scripts/js-add2home.js
 assets/scripts/js-refresh-manifest.js
 assets/scripts/script.js
+
+# IMAGES
+
+assets/icon/favicon.svg
+assets/icon/trash.svg
+assets/icon/welcome.svg
