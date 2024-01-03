@@ -412,7 +412,7 @@ function create_list_start_vote(){
         idealAverage = 1 / totalRounds;
         console.log(totalRounds);
         console.log((idealAverage)*100 + "%");
-        document.getElementById("exercise").style.display = "block";
+        document.getElementById("vote").style.display = "block";
         document.getElementById("create_list").style.display = "none";
         if (!window.localStorage.getItem('matrix')){
             for (let i=0; i<list.length; i++) {
@@ -437,11 +437,11 @@ function giveChoice(){
 
     if (percentageRemainingVotes <= .999){
 /*         document.getElementById("votes-needed").innerHTML = '<p class="not-ready">Votes Needed: ' + sumTotalVotes + '/' +  (list.length - 1)*(list.length/2) + '</p>'; */
-        document.getElementById("progress-bar").innerHTML = '<progress id="vote-progress" value="' + sumTotalVotes + '" max="' + (list.length - 1)*(list.length/2) + '"></progress> <div class="progress-bar-text"><p>' + (((list.length - 1)*(list.length/2)) - sumTotalVotes) + ' Votes Needed</p><p>' + Math.round(percentageRemainingVotes * 100) + '% Complete</p></div>';
+        document.getElementById("vote_main_progress").innerHTML = '<progress id="vote_main_progress_bar" value="' + sumTotalVotes + '" max="' + (list.length - 1)*(list.length/2) + '"></progress> <div class="vote_main_progress_status"><p>' + (((list.length - 1)*(list.length/2)) - sumTotalVotes) + ' Votes Needed</p><p>' + Math.round(percentageRemainingVotes * 100) + '% Complete</p></div>';
     } else if (percentageRemainingVotes >= .999){
-        document.getElementById("progress-bar").innerHTML = '<progress id="vote-progress" value="' + sumTotalVotes + '" max="' + (list.length - 1)*(list.length/2) + '"></progress> <div class="progress-bar-text"><p>' + (sumTotalVotes) + ' Total Votes</p><p>100% Complete</p></div>';
-        document.getElementById("show-results-null").style.display = 'none';
-        document.getElementById("show-results").style.display = 'flex';
+        document.getElementById("vote_main_progress").innerHTML = '<progress id="vote_main_progress_bar" value="' + sumTotalVotes + '" max="' + (list.length - 1)*(list.length/2) + '"></progress> <div class="vote_main_progress_status"><p>' + (sumTotalVotes) + ' Total Votes</p><p>100% Complete</p></div>';
+        document.getElementById("vote_results_disabled").style.display = 'none';
+        document.getElementById("vote_results_enabled").style.display = 'flex';
     }
 
     console.log(totalVotes)
@@ -477,9 +477,9 @@ function giveChoice(){
 
     console.log(fifoRow);
 
-    document.getElementById("option1").blur
-    document.getElementById("option2").blur
-    document.getElementById("choices").innerHTML = '<div class="buttons-to-press"><input type="button" class="choice-button" onclick="option(' + chooseRow +', ' + chooseColumn +')" name="option1" id="option1" value="' + list[chooseRow] + '">' + '<input type="button" class="choice-button" onclick="option(' + chooseColumn +', ' + chooseRow +')"" name="option2" id="option2" value="' + list[chooseColumn] + '"></div>';
+    document.getElementById("vote_main_inputs_dynamic_button_option1").blur
+    document.getElementById("vote_main_inputs_dynamic_button_option2").blur
+    document.getElementById("vote_main_inputs").innerHTML = '<div class="vote_main_inputs_dynamic"><input type="button" class="vote_main_inputs_dynamic_button" onclick="option(' + chooseRow +', ' + chooseColumn +')" name="vote_main_inputs_dynamic_button_option1" id="vote_main_inputs_dynamic_button_option1" value="' + list[chooseRow] + '">' + '<input type="button" class="vote_main_inputs_dynamic_button" onclick="option(' + chooseColumn +', ' + chooseRow +')"" name="vote_main_inputs_dynamic_button_option2" id="vote_main_inputs_dynamic_button_option2" value="' + list[chooseColumn] + '"></div>';
 
 
     choiceA_Rating = elo[chooseRow];
@@ -595,7 +595,7 @@ function option(chosen, rejected){
 
 
 function showResults(){
-    document.getElementById("exercise").style.display = "none";
+    document.getElementById("vote").style.display = "none";
     document.getElementById("results").style.display = "flex";
 
     document.getElementById("list-item-matrix").innerHTML = printMatrix(matrix);
@@ -603,7 +603,7 @@ function showResults(){
 }
 
 function keepVoting(){
-    document.getElementById("exercise").style.display = "block";
+    document.getElementById("vote").style.display = "block";
     document.getElementById("results").style.display = "none";  
 }
 
@@ -626,7 +626,7 @@ function restart(){
     itemList=[];
     itemListHTMLPreview.innerHTML = '';
 
-    document.getElementById("exercise").style.display = "none";
+    document.getElementById("vote").style.display = "none";
     document.getElementById("create_list").style.display = "flex";
 
     document.getElementById("results").style.display = "none";
@@ -637,8 +637,8 @@ function restart(){
 
     document.getElementById("create_list_welcome_message").style.display = 'flex';
 
-    document.getElementById("show-results-null").style.display = 'flex';
-    document.getElementById("show-results").style.display = 'none';
+    document.getElementById("vote_results_disabled").style.display = 'flex';
+    document.getElementById("vote_results_enabled").style.display = 'none';
 
 
 }

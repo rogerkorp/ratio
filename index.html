@@ -1,5 +1,5 @@
 <!-- Ratio by Roger Korpics -->
-<!-- Polished Version -->
+<!-- Version 1.2.2 (Polished Version)-->
 
 <!DOCTYPE html>
 <html manifest="cache.manifest" lang="en">
@@ -61,16 +61,14 @@
     <body onload="restart()">
 
         <!-- Landscape Warning Message -->
-        <!-- Trigger: CSS Media Query, landscape orientation -->
-        <!-- Message telling users to use the application in portrait mode-->
+
         <div id="landscape_warning">
             <p>Please rotate your device</p>
             <p>This app is vertical only.</p>
         </div>
 
         <!-- Help Section -->
-        <!-- The tutorial that explains how to use Ratio  -->
-        <!-- Still a work-in-progess -->
+
         <div id="help" style="display:none">
             <div class="help_text">
                 <h2>Instructions</h2>
@@ -82,8 +80,8 @@
             <button class="standard_button" onclick="toggle_help()">Got it!</button>
         </div>
 
-        <!-- List Creation -->
-        <!-- -->
+        <!-- List Creation / Home Screen (Step 1) -->
+ 
         <div class="create_list" id="create_list">
 
             <!-- Navigation Bar -->
@@ -102,7 +100,7 @@
             <div id="create_list_welcome_message" style="display:flex;">
                 <img src="assets/icon/welcome.svg">
                 <h1>Ratio</h1>
-                <p id="create_list_welcome_message_version_number">Version 1.2.1 (Build 8)</p>
+                <p id="create_list_welcome_message_version_number">Version 1.2.2</p>
                 <p>To start a vote, please submit at least 3 choices using the textbox below.</p>
             </div>
 
@@ -123,34 +121,49 @@
             </div>
         </div>
 
+        <!-- Voting Screen (Step 2) -->
+        <!-- vote -->
 
-        <div id="exercise" style="display: none">
+        <div id="vote" style="display: none">
+
+            <!-- Navigation Bar -->
+
             <nav>
-                <button class="standard_button" onclick="restart()" id="restart">Cancel Vote</button>
+                <button class="standard_button" onclick="restart()" id="vote_restart">Cancel Vote</button>
                 <div class="logo"><img class="logo" src="assets/icon/favicon.svg"></div>
-                <button class="standard_button" id="show-results-null" display="flex">See Results</button>
-                <button class="standard_button" id="show-results" display="none" onclick="showResults();">See Results</button>
+                <button class="standard_button" id="vote_results_disabled" display="flex">See Results</button>
+                <button class="standard_button" id="vote_results_enabled" display="none" onclick="showResults();">See Results</button>
             </nav>
-            <div class="main-voting">
-                <div id="progress-bar" class="progress-bar">
-                    <progress id="vote-progress"></progress>
-                    <div class="progress-bar-text">
+
+            <!-- Main -->
+
+            <div class="vote_main">
+                
+                <!-- Main Progress -->
+
+                <div id="vote_main_progress" class="vote_main_progress">
+                    <progress id="vote_main_progress_bar"></progress>
+                    <div class="vote_main_progress_status">
                         <p>XX Votes Needed</p>
                         <p>50% Complete</p>
                     </div>
                 </div>
-                <div id="choices">
-                    <div class="buttons-to-press">
-                        <input type="button" class="choice-button" onclick="option()" name="option1" id="option1" value="A">
-                        <input type="button" class="choice-button" onclick="option()" name="option2" id="option2" value="B">
+
+                <!-- Main Inputs -->
+
+                <div id="vote_main_inputs">
+                    <div class="vote_main_inputs_dynamic">
+                        <input type="button" class="vote_main_inputs_dynamic_button" onclick="option()" name="vote_main_inputs_dynamic_button_option1" id="vote_main_inputs_dynamic_button_option1" value="A">
+                        <input type="button" class="vote_main_inputs_dynamic_button" onclick="option()" name="vote_main_inputs_dynamic_button_option2" id="vote_main_inputs_dynamic_button_option2" value="B">
                     </div>
                 </div>
-
-       <!--           -->
-
             </div>
+        
         </div>
 
+
+        <!-- Results Screen (Step 3) -->
+        <!-- result -->
         <div id="results" style="display: none">
 
             <nav>
@@ -172,13 +185,6 @@
        
             </div>
         </div>
-
-        
-
-    
-
-
-
 
         <script src="assets/scripts/js-refresh-manifest.js"></script> 
         <script src="assets/scripts/script.js"></script>

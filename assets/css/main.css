@@ -180,6 +180,7 @@
   }
 
 
+
 /* ------- Element Selectors ------- */
 
 body{
@@ -268,6 +269,7 @@ progress::-moz-progress-bar {
 }
 
 
+
 /* ------- Help Section ------- */
 
 #help{
@@ -289,6 +291,7 @@ progress::-moz-progress-bar {
 .help_text h2{
     text-align: center;
 }
+
 
 
 /* ------- List Creation ------- */
@@ -431,7 +434,93 @@ progress::-moz-progress-bar {
 }
 
 
-/* ------- List Creation ------- */
+
+/* ------- Voting Screen ------- */
+
+.vote{
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100vw;
+    z-index: 2;
+}
+
+.vote_main{
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: scroll;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100vw;
+}
+
+#vote_main_inputs{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.vote_main_inputs_dynamic{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.vote_main_inputs_dynamic_button{
+    background-color: var(--white);
+    border-radius: .5em;
+    border: 1px solid var(--blue);
+    color: var(--blue);
+    font-size: 1.5em;
+    font-weight: bold;
+    height: 33vh;
+    margin: .25em;
+    padding: .25em;
+    white-space: normal;
+    width: 90vw;
+    word-wrap: break-word;
+}
+
+.vote_main_inputs_dynamic_button:hover{
+    cursor: pointer;
+}
+
+.vote_main_progress{
+    display: flex;
+    flex-direction: column;
+    margin: 1em;
+    margin-top: 6em;
+}
+
+.vote_main_progress_status{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#vote_restart{
+    background-color: var(--cancel-color);
+}
+
+#vote_results_disabled{
+    background-color: var(--null);
+    color: var(--primary-text);
+}
+
+#vote_results_disabled:hover{
+    cursor: not-allowed;
+}
+
+
+
+/* ------- Results Screen ------- */
 
 .list-item{
     display: flex;
@@ -441,28 +530,6 @@ progress::-moz-progress-bar {
     margin-left: 2em;
 }
 
-.exercise{
-    z-index: 2;
-    width: 100vw;
-    left: 0;
-    overflow: hidden;
-    position: fixed;
-    right: 0;
-    top: 0;
-    bottom: 0;
-}
-
-.main-voting{
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    width: 100vw;
-    overflow: scroll;
-    position: fixed;
-    right: 0;
-    top: 0;
-    bottom: 0;
-}
 
 .main-results{
     height: 85vh;
@@ -474,48 +541,6 @@ progress::-moz-progress-bar {
     padding-bottom: 5em;
 }
 
-#choices{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-}
-
-.buttons-to-press{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-}
-
-.choice-button{
-    font-size: 1.5em;
-    width: 90vw;
-    height: 33vh;
-    margin: .25em;
-    background-color: var(--white);
-    border: 1px solid var(--blue);
-    color: var(--blue);
-    border-radius: .5em;
-    white-space: normal;
-    word-wrap: break-word;
-    padding: .25em;
-    font-weight: bold;
-}
-
-.choice-button:hover{
-    cursor: pointer;
-}
-
-/* Progress Bar */
-
-.progress-bar{
-    display: flex;
-    flex-direction: column;
-    margin: 1em;
-    margin-top: 6em;
-}
-
 .progress-bar-visuals{
     width: auto;
     height: 3em;
@@ -523,11 +548,6 @@ progress::-moz-progress-bar {
     border-radius: .5em;
 }
 
-.progress-bar-text{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
 
 /* ------- ID Selectors ------- */
 
@@ -551,19 +571,6 @@ progress::-moz-progress-bar {
     height: 2.75em;
 }
 
-
-#restart{
-    background-color: var(--cancel-color);
-}
-
-#show-results-null{
-    background-color: var(--null);
-    color: var(--primary-text);
-}
-
-#show-results-null:hover{
-    cursor: not-allowed;
-}
 
 #results{
     position: absolute;
