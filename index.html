@@ -10,7 +10,7 @@
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
         <meta name="apple-mobile-web-app-title" content="Ratio">
         <meta name="format-detection" content="telephone=no">
 
@@ -60,12 +60,16 @@
     
     <body onload="restart()">
 
+
+
         <!-- Landscape Warning Message -->
 
         <div id="landscape_warning">
             <p>Please rotate your device</p>
             <p>This app is vertical only.</p>
         </div>
+
+
 
         <!-- Help Section -->
 
@@ -79,6 +83,8 @@
             </div>
             <button class="standard_button" onclick="toggle_help()">Got it!</button>
         </div>
+
+
 
         <!-- List Creation / Home Screen (Step 1) -->
  
@@ -121,8 +127,9 @@
             </div>
         </div>
 
+
+
         <!-- Voting Screen (Step 2) -->
-        <!-- vote -->
 
         <div id="vote" style="display: none">
 
@@ -162,39 +169,50 @@
         </div>
 
 
+
         <!-- Results Screen (Step 3) -->
-        <!-- result -->
+
         <div id="results" style="display: none">
 
+            <!-- Navigation Bar -->
+
             <nav>
-                <div></div>
+                <div></div> <!-- This is blank on purpose. -->
                 <div class="logo"><img class="logo" src="assets/icon/favicon.svg"></div>
                 <button class="standard_button" onclick="restart()">New Vote</button>
             </nav>
 
-            <div class="main-results">
-                    <div class="winner">
-                        <p class="winner-flavor">Your top pick was...</p>
-                        <p class="winner-result" id="winner-result">Undefined</p>
+            <!-- Main Results -->
+
+            <div class="results_main"> 
+
+                    <!-- Top Choice -->
+
+                    <div class="results_main_favorite"> 
+                        <p class="results_main_favorite_preface">Your top pick was...</p> 
+                        <p class="results_main_favorite_name" id="results_main_favorite_name">Undefined</p> 
                     </div>
    
+                    <!-- Full List of Data -->
 
-                    <div class="data">
-                        <div id="list-item-matrix"></div>
+                    <div class="results_main_data"> 
+                        <div id="results_main_data_list"></div>
                     </div>
        
             </div>
         </div>
 
-        <script src="assets/scripts/js-refresh-manifest.js"></script> 
-        <script src="assets/scripts/script.js"></script>
+
+
+        <!-- Javascript -->
+        <script src="assets/scripts/js-refresh-manifest.js"></script>  <!-- Cache Manifest -->
+        <script src="assets/scripts/script.js"></script> <!-- Main Script -->
         <script type="text/javascript">
             var addToHomeConfig = {
                 touchIcon: true,
                 animationIn: 'bubble'
             };
         </script>
-        <script src="assets/scripts/js-add2home.js"></script> 
-
+        <script src="assets/scripts/js-add2home.js"></script>  <!-- Add to Homescreen Prompt-->
     </body>
 </html>

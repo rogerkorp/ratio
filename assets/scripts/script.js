@@ -211,8 +211,6 @@ function readData() {
   }
   
 
-
-
 let form = document.getElementById("create_list_start_vote_form");
 function handleForm(event) { 
     event.preventDefault(); 
@@ -383,11 +381,11 @@ function printMatrix(myArray){
     let eloMin = Math.min(...elo)
 
     let result = "";
-    result += '<div class="results-item" id="results-listing-header"><p class="result-item">Place</p><p class="result-item">Item</p><p class="result-item" id="result-header-score">Score</p></div>';
+    result += '<div class="results_main_data_list_item" id="results_main_data_list_header"><p class="results_main_data_list_item_name">Place</p><p class="results_main_data_list_item_name">Item</p><p class="results_main_data_list_item_name" id="results_main_data_list_header_score">Score</p></div>';
 
     for (let i=0; i<myArray.length; i++) {
         let score_percent = elo_to_percentage(elo[i], eloMin, eloMax);
-        result += '<div class="results-item"><p class="result-placement">' + (i+1) + '. </p><p class="result-item">' + list[i] + '</p><p class="result-percentage" style="background-color:' + colorscale[((elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(0))] + ';">' + (elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(1) + '%</p></div>';
+        result += '<div class="results_main_data_list_item"><p class="results_main_data_list_item_place">' + (i+1) + '. </p><p class="results_main_data_list_item_name">' + list[i] + '</p><p class="results_main_data_list_item_score" style="background-color:' + colorscale[((elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(0))] + ';">' + (elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(1) + '%</p></div>';
         
 
     };
@@ -508,8 +506,6 @@ function giveChoice(){
 }
 
 
-
-
 function option(chosen, rejected){
 
 
@@ -576,7 +572,7 @@ function option(chosen, rejected){
     window.localStorage.setItem('sum-total-votes', sumTotalVotes);
 
     giveChoice();
-    // document.getElementById("list-item-matrix").innerHTML = printMatrix(matrix);
+    // document.getElementById("results_main_data_list").innerHTML = printMatrix(matrix);
 
     window.localStorage.setItem('elo', JSON.stringify(elo));
     window.localStorage.setItem('votes', JSON.stringify(totalVotes));
@@ -598,8 +594,8 @@ function showResults(){
     document.getElementById("vote").style.display = "none";
     document.getElementById("results").style.display = "flex";
 
-    document.getElementById("list-item-matrix").innerHTML = printMatrix(matrix);
-    document.getElementById("winner-result").innerHTML = list[0];
+    document.getElementById("results_main_data_list").innerHTML = printMatrix(matrix);
+    document.getElementById("results_main_favorite_name").innerHTML = list[0];
 }
 
 function keepVoting(){
