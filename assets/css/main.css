@@ -452,15 +452,11 @@ progress::-moz-progress-bar {
     bottom: 0;
 }
 
-
 .main-voting{
     height: 100vh;
     display: flex;
     flex-direction: column;
-/*     justify-content: space-between; */
     width: 100vw;
-
-
     overflow: scroll;
     position: fixed;
     right: 0;
