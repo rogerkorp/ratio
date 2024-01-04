@@ -178,13 +178,21 @@ function sumArrays(array){ // Determines how many rounds a specific item has app
 
 function findK(votes, rating){ // For each item, it takes the total number of times it has appeared in a vote, its current score, and gives it a number that determines the minimum/maximum points that can be gained/lost.
     let k;
-    if ((votes <= 10) & (rating <= 2000)){
+
+    // Three-tier K system
+
+/*     if ((votes <= 10) & (rating <= 2000)){
         k = 32;
     } else if ((votes > 10) & (rating <= 2000)){
         k = 24;
     } else if ((votes > 10) & (rating > 2000)){
         k = 16;
-    };
+    }; */
+
+
+    // Progressive K system
+
+    k = (800/(votes+1));
 
     console.log ("Rating: " + rating + " K-Factor: " + k);
     return k;
@@ -326,9 +334,8 @@ function giveChoice(){ // Draws two random items on the list, and calculates the
 /*         document.getElementById("votes-needed").innerHTML = '<p class="not-ready">Votes Needed: ' + sumTotalVotes + '/' +  (list.length - 1)*(list.length/2) + '</p>'; */
         document.getElementById("vote_main_progress").innerHTML = '<progress id="vote_main_progress_bar" value="' + sumTotalVotes + '" max="' + (list.length - 1)*(list.length/2) + '"></progress> <div class="vote_main_progress_status"><p>' + (((list.length - 1)*(list.length/2)) - sumTotalVotes) + ' Votes Needed</p><p>' + Math.round(percentageRemainingVotes * 100) + '% Complete</p></div>';
     } else if (percentageRemainingVotes >= .999){
-        document.getElementById("vote_main_progress").innerHTML = '<progress id="vote_main_progress_bar" value="' + sumTotalVotes + '" max="' + (list.length - 1)*(list.length/2) + '"></progress> <div class="vote_main_progress_status"><p>' + (sumTotalVotes) + ' Total Votes</p><p>100% Complete</p></div>';
-        document.getElementById("vote_results_disabled").style.display = 'none';
-        document.getElementById("vote_results_enabled").style.display = 'flex';
+        showResults();
+        // document.getElementById("vote_main_progress").innerHTML = '<progress id="vote_main_progress_bar" value="' + sumTotalVotes + '" max="' + (list.length - 1)*(list.length/2) + '"></progress> <div class="vote_main_progress_status"><p>' + (sumTotalVotes) + ' Total Votes</p><p>100% Complete</p></div>';
     }
 
     // Drawing criteria:
