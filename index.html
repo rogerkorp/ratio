@@ -1,5 +1,5 @@
 <!-- Ratio by Roger Korpics -->
-<!-- Version 1.2.2 (Polished Version)-->
+<!-- Version 1.3.2 (Polished Version)-->
 
 <!DOCTYPE html>
 <html manifest="cache.manifest" lang="en">
@@ -76,10 +76,10 @@
         <div id="help" style="display:none">
             <div class="help_text">
                 <h2>Instructions</h2>
-                <p>Ratio is an app that helps you <b>find your favorite things</b></p>
-                <p>To begin, type in a list of at least three things you would like to choose between. When you're ready, press the <b>Start Vote</b> button to begin the exercise!</p>
-                <p>During the exercise, you will be given <b>unique pairings</b> of two items in your list. All you have to do is <b>tap on the item you like more!</b></p>
-                <p>Once all unique pairings have been voted on, click on the <b>See Results</b> button to see how each list item did! <b>The higher the percentage, the more you liked it!</b></p>
+                <p>Ratio is an app that helps you <b>rank different things against each other.</b></p>
+                <p>To begin, type in a list of at least <b>three things</b> you would like to choose between. When you're ready, press the <b>Start Vote</b> button to begin the voting process!</p>
+                <p>During the exercise, you will be given <b>unique pairings</b> of two items in your list. All you have to do is <b>tap on the item you prefer!</b></p>
+                <p>Once all unique pairings have been voted on, press the <b>See Results</b> button to see how each list item did! <b>The higher the percentage, the more you preferred it.</b></p>
             </div>
             <button class="standard_button" onclick="toggle_help()">Got it!</button>
         </div>
@@ -106,7 +106,7 @@
             <div id="create_list_welcome_message" style="display:flex;">
                 <img src="assets/icon/welcome.svg">
                 <h1>Ratio</h1>
-                <p id="create_list_welcome_message_version_number">Version 1.3.0</p>
+                <p id="create_list_welcome_message_version_number">Version 1.3.2</p>
                 <p>To start a vote, please submit at least 3 choices using the textbox below.</p>
             </div>
 
@@ -138,8 +138,7 @@
             <nav>
                 <button class="standard_button" onclick="restart()" id="vote_restart">Cancel Vote</button>
                 <div class="logo"><img class="logo" src="assets/icon/favicon.svg"></div>
-                <button class="standard_button" id="vote_results_disabled" style="display: flex">See Results</button>
-                <button class="standard_button" id="vote_results_enabled" style="display: none" onclick="showResults();">See Results</button>
+                <div></div>
             </nav>
 
             <!-- Main -->

@@ -1,67 +1,44 @@
-let itemList = []; //Stores all of the items you are voting on.
-
-/* CREATE A NEW VOTE VARAIBLES */
-
-let newItem; //Temporarily stores the new item you want to add to your list.
-let itemListHTMLText = ''; //The variable that stores the full string for the HTML Preview on the New Vote Screen
-let itemListHTMLPreview =  document.getElementById('create_list_preview_items'); //This variable actually updates the inner HTML
-
-
-let newListValues;
-let text = "<th></th>";
-let matrix = [];
 let booleanMatrix = [];
-let totalVotes = [];
-let list = [];
-
-
-let sumTotalVotes = 0;
-
-let chooseRow;
-let chooseColumn;
-
-let lastRowChoice = 0;
-let lastColumnChoice = 0;
-
-let fifoRow; //pop[0], push[l-1];
-let fifoColumn;
-
-let totalRounds;
-let idealAverage;
-
-let sum = 0;
-
-let choiceA_Rating;
-let choiceB_Rating;
 let choiceA_ExpectedScore;
-let choiceB_ExpectedScore;
-let choiceA_TotalVotes;
-let choiceB_TotalVotes;
 let choiceA_K;
-let choiceB_K;
-
 let choiceA_minus_choiceB;
+let choiceA_Rating;
+let choiceA_TotalVotes;
+let choiceB_ExpectedScore;
+let choiceB_K;
 let choiceB_minus_choiceA;
-let percentageRemainingVotes;
-
+let choiceB_Rating;
+let choiceB_TotalVotes;
+let chooseColumn;
+let chooseRow;
 let colorscale = ['#cb4064', '#c94064', '#c73f64', '#c53f64', '#c33f64', '#c13f63', '#bf3e63', '#bd3e63', '#bb3e63', '#ba3e63', '#b83d63', '#b63d63', '#b43d63', '#b23d63', '#b03c62', '#ae3c62', '#ac3c62', '#aa3c62', '#a83b62', '#a63b62', '#a43b62', '#a23b62', '#a03a62', '#9e3a61', '#9c3a61', '#9b3a61', '#993961', '#973961', '#953961', '#933861', '#913861', '#8f3861', '#8d3860', '#8b3760', '#893760', '#873760', '#853760', '#833660', '#813660', '#7f3660', '#7d3660', '#7b355f', '#7a355f', '#78355f', '#76355f', '#74345f', '#72345f', '#70345f', '#6e345f', '#6c335f', '#6a335f', '#68335e', '#66325e', '#64325e', '#62325e', '#60325e', '#5e315e', '#5c315e', '#5a315e', '#59315e', '#57305d', '#55305d', '#53305d', '#51305d', '#4f2f5d', '#4d2f5d', '#4b2f5d', '#492f5d', '#472e5d', '#452e5c', '#432e5c', '#412e5c', '#3f2d5c', '#3d2d5c', '#3b2d5c', '#3a2d5c', '#382c5c', '#362c5c', '#342c5b', '#322b5b', '#302b5b', '#2e2b5b', '#2c2b5b', '#2a2a5b', '#282a5b', '#262a5b', '#242a5b', '#22295a', '#20295a', '#1e295a', '#1c295a', '#1a285a', '#19285a', '#17285a', '#15285a', '#13275a', '#112759', '#0f2759', '#0d2759', '#0b2659', '#092659'];
-let darkcolorscale = ['#972906', '#962908', '#962909', '#95290b', '#94290d', '#942a0e', '#932a10', '#932a11', '#922a12', '#912a13', '#912a15', '#902a16', '#8f2a17', '#8f2a18', '#8e2a19', '#8d2a1a', '#8d2b1c', '#8c2b1d', '#8b2b1e', '#8b2b1f', '#8a2b20', '#892b21', '#892b22', '#882b23', '#872b24', '#872b25', '#862b26', '#852b27', '#852c28', '#842c29', '#832c29', '#832c2a', '#822c2b', '#812c2c', '#802c2d', '#802c2e', '#7f2c2f', '#7e2c30', '#7e2c31', '#7d2c32', '#7c2c33', '#7b2c34', '#7b2d35', '#7a2d35', '#792d36', '#782d37', '#782d38', '#772d39', '#762d3a', '#752d3b', '#742d3c', '#742d3d', '#732d3d', '#722d3e', '#712d3f', '#702d40', '#702d41', '#6f2e42', '#6e2e43', '#6d2e44', '#6c2e45', '#6b2e45', '#6b2e46', '#6a2e47', '#692e48', '#682e49', '#672e4a', '#662e4b', '#652e4c', '#642e4d', '#632e4d', '#622e4e', '#612e4f', '#602e50', '#5f2f51', '#5e2f52', '#5d2f53', '#5c2f54', '#5b2f54', '#5a2f55', '#592f56', '#582f57', '#572f58', '#562f59', '#552f5a', '#542f5b', '#522f5c', '#512f5c', '#502f5d', '#4f2f5e', '#4d2f5f', '#4c2f60', '#4b3061', '#4a3062', '#483063', '#473064', '#453064', '#443065', '#423066', '#413067', '#3f3068'];
-
-
 let elo = [];
+let fifoColumn;
+let fifoRow;
+let idealAverage;
+let itemList = []; 
+let itemListHTMLPreview =  document.getElementById('create_list_preview_items'); 
+let itemListHTMLText = ''; 
+let lastColumnChoice = 0;
+let lastRowChoice = 0;
+let list = [];
+let matrix = [];
+let newItem; 
+let newListValues;
+let percentageRemainingVotes;
+let sum = 0;
+let sumTotalVotes = 0;
+let text = "<th></th>";
+let totalRounds;
+let totalVotes = [];
 
-function readData() {
-    console.log("readData called");
-  
-    // Does this browser support local storage?
-    if (typeof (Storage) !== "undefined") {
-        console.log("Browser supports local storage");
-    
-        if (window.localStorage.getItem('matrix')){
-          /*   let lastList = window.localStorage.getItem('sanitized-list');
-            document.getElementById("write-new-list").value = lastList; */
+function readData() { // Gets variables from local storage 
 
-            
+// Step 1: Check to see if local storage is avialable
+    if (typeof (Storage) !== "undefined") { 
+
+    // Step 2: Check to see if there are any variables currently saved inside of local storage
+        if (window.localStorage.getItem('matrix')){ 
             itemList = JSON.parse(window.localStorage.getItem('list'));
             matrix = JSON.parse(window.localStorage.getItem('matrix'));
             booleanMatrix = JSON.parse(window.localStorage.getItem('boolean-matrix'));
@@ -69,54 +46,41 @@ function readData() {
             totalVotes = JSON.parse(window.localStorage.getItem('votes'));
             sumTotalVotes = JSON.parse(window.localStorage.getItem('sum-total-votes'));
 
-            // console.log(itemList);
-            // console.log(matrix);
-            // console.log(booleanMatrix);
-            // console.log(elo);
-            // console.log(totalVotes);
-            // console.log(sumTotalVotes)
-
-
             if (window.localStorage.getItem('sum-total-votes') == null){
-                sumTotalVotes = 0;
-            };
-
-
-            create_list_start_vote();
-
+                sumTotalVotes = 0; 
+            };  
+    
+            create_list_start_vote(); // If YES, then it triggers the start of the vote.
         }
 
     } else {
       // Sorry! No Web Storage support..
       alert('This browser does NOT support local storage');
     }
-  };
+};
 
-/* CREATING THE ITEM LIST */
-
-
-function appendVotingList(){ 
+function appendVotingList(){ // Adds items to itemList, and displays it on the list preview 
     
-    //Step 1: Get the value of the new item
+    // Step 1: Get the value of the new item
         newItem = document.getElementById('create_list_textbox_form_input_id').value;
 
-    //Step 2: Check to see if the value is not blank
+    // Step 2: Check to see if the value is not blank
         if (newItem == ''){
             alert('Please enter a valid item name');
             return false;
 
-    //Step 3: If the first check clears, check to see if the item already exists in the array
+    // Step 3: If the first check clears, check to see if the item already exists in the array
         } else if (itemList.includes(newItem)){
             alert('Please do not enter duplicate list items');
             return false;
 
-    //Step 4: If THAT check clears, add the list item to the array
+    // Step 4: If THAT check clears, add the list item to the array
         } else {
             itemList.push(newItem);
             itemListHTMLText = "";
         };
 
-    //Step 5: Update the HTML to reflect the current list
+    // Step 5: Update the HTML to reflect the current list
         for (let i=0; i<itemList.length; i++){
             itemListHTMLText += '<li class="create_list_preview_items_data_unit"><div class="create_list_preview_items_data_unit_text">' + itemList[i] + '</div><button type="button" class="create_list_preview_items_data_unit_delete" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>'; //Button allows you to delete that specific list item.
         }
@@ -125,25 +89,24 @@ function appendVotingList(){
         clearCurrentValues();
 
 
-
+    // Step 6: Checks to see if there are enough list items to start the vote. If there are 3+ then the button will be enabled.
         if (itemList.length >= 3){
             document.getElementById("create_list_start_vote_form_submit_enabled").style.display = 'flex';
             document.getElementById("create_list_start_vote_form_submit_disabled").style.display = 'none';
         }
 
-
+    // Scrolls the list to the very bottom.
         document.getElementById('create_list_preview_bottom').scrollIntoView();
 
+    // Checks to see if the list contains an item. If it does, then the welcome message will disappear.
         if (itemList.length > 0){
             document.getElementById("create_list_welcome_message").style.display = 'none';
         } else {
             document.getElementById("create_list_welcome_message").style.display = 'flex';
         }
-
-
 };
 
-function toggle_help(){
+function toggle_help(){ // Diplays the help section on the home screen
     help = document.getElementById("help");
     console.log("Help Toggle Triggered")
     
@@ -154,44 +117,39 @@ function toggle_help(){
     };
 };
 
-
-function clearCurrentValues(){
+function clearCurrentValues(){ // Removes values textbox. Used when a value is submitted in the list creation textbox page
     document.getElementById('create_list_textbox_form_input_id').value = '';
 };
 
-/* REMOVING ITEMS FROM THE ITEM LIST  */
+function spliceVotingList(listItemNumber){ // Removes items from itemList, and displays it on the list preview
+    // Step 1: Clear the old list item text
+        itemListHTMLText = '';
 
-function spliceVotingList(listItemNumber){
-    //Step 1: Clear the old list item text
-    itemListHTMLText = '';
+    // Step 2: Removes the list item specified by variable 'listItemNumber'
+        itemList.splice(listItemNumber, 1);
 
-    //Step 2: Removes the list item specified by variable 'listItemNumber'
-    itemList.splice(listItemNumber, 1);
+    // Step 3: Rebuilds the HTML Text to reflect the current list
+        for (let i=0; i<itemList.length; i++){
+            itemListHTMLText += '<li class="create_list_preview_items_data_unit"><div class="create_list_preview_items_data_unit_text">' + itemList[i] + '</div><button type="button" class="create_list_preview_items_data_unit_delete" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>';
+        }
+        itemListHTMLPreview.innerHTML = '<ul class="create_list_preview_items_data">' + itemListHTMLText +'<div id="create_list_preview_bottom"></div></ul>';
 
-    //Step 3: Rebuilds the HTML Text to reflect the current list
-    for (let i=0; i<itemList.length; i++){
-        itemListHTMLText += '<li class="create_list_preview_items_data_unit"><div class="create_list_preview_items_data_unit_text">' + itemList[i] + '</div><button type="button" class="create_list_preview_items_data_unit_delete" onclick=spliceVotingList(' + i + ')><img type="svg" src="assets/icon/trash.svg"></button></li>';
-    }
-    itemListHTMLPreview.innerHTML = '<ul class="create_list_preview_items_data">' + itemListHTMLText +'<div id="create_list_preview_bottom"></div></ul>';
+    // Step 4: Update Style Rules to Reflect Current System Status
+        if (itemList.length == 0){
+            document.getElementById("create_list_welcome_message").style.display = 'flex';
+        } else {
+            document.getElementById("create_list_welcome_message").style.display = 'none';
+        };
 
+    // Step 5: Checks to see if there are enough list items to start the vote. If there are less than 3, then the button will be disabled.
 
-    //Step 4: Update Style Rules to Reflect Current System Status
-
-    if (itemList.length == 0){
-        document.getElementById("create_list_welcome_message").style.display = 'flex';
-    } else {
-        document.getElementById("create_list_welcome_message").style.display = 'none';
-    };
-
-    if (itemList.length <= 2){
-        document.getElementById("create_list_start_vote_form_submit_enabled").style.display = 'none';
-        document.getElementById("create_list_start_vote_form_submit_disabled").style.display = 'flex';
-    }
-
-
+        if (itemList.length <= 2){
+            document.getElementById("create_list_start_vote_form_submit_enabled").style.display = 'none';
+            document.getElementById("create_list_start_vote_form_submit_disabled").style.display = 'flex';
+        }
 };
 
-window.onkeyup = function(event) {
+window.onkeyup = function(event) { // Submits textbox form when the enter key is pressed
     const el = document.querySelector('.create_list_textbox_form_input');
     if (el === document.activeElement){
         if (event.which == 13) {
@@ -201,19 +159,16 @@ window.onkeyup = function(event) {
     }
 };
 
+
+
 let form = document.getElementById("create_list_start_vote_form");
 function handleForm(event) { 
     event.preventDefault(); 
 };
-
 form.addEventListener('submit', handleForm);
 
-function sanitizeInputs(str){
-    str = str.replace(/[^a-z0-9áéíóúñü \,-]/gim,"");
-    return str.trim();
-};
 
-function sumArrays(array){
+function sumArrays(array){ // Determines how many rounds a specific item has appeared in a vote, for the purpose of calculating an ELO. 
     sum = 0;
     for (let i = 0; i < array.length; i++){
         sum += array[i];
@@ -221,44 +176,35 @@ function sumArrays(array){
     return sum;
 };
 
-function findK(votes, rating){
+function findK(votes, rating){ // For each item, it takes the total number of times it has appeared in a vote, its current score, and gives it a number that determines the minimum/maximum points that can be gained/lost.
     let k;
-    if ((votes <= 30) & (rating <= 6000)){
-        k = 100;
-    } else if ((votes >= 30) & (rating <= 6000)){
-        k = 50;
-    } else if ((votes >= 30) & (rating >= 6000)){
-        k = 25
-    };
 
+    // Three-tier K system
+
+/*     if ((votes <= 10) & (rating <= 2000)){
+        k = 32;
+    } else if ((votes > 10) & (rating <= 2000)){
+        k = 24;
+    } else if ((votes > 10) & (rating > 2000)){
+        k = 16;
+    }; */
+
+
+    // Progressive K system
+
+    k = (800/(votes+1));
+
+    console.log ("Rating: " + rating + " K-Factor: " + k);
     return k;
 };
 
-function getExpectedScore(primary, secondary){
+function getExpectedScore(primary, secondary){ // Determines the odds of one item winning
     let difference = secondary - primary;
     let chances = 1/(1+10**((difference)/1000));
     return chances;
 };
 
-function shuffle(array){
-    let flattenedArray = array.flat();
-    let currentIndex = flattenedArray.length,  randomIndex;
-
-    // While there remain elements to shuffle.
-    while (currentIndex != 0) {
-      // Pick a remaining element.
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-  
-      // And swap it with the current element.
-      [flattenedArray[currentIndex], flattenedArray[randomIndex]] = [
-        flattenedArray[randomIndex], flattenedArray[currentIndex]];
-    }
-  
-    return flattenedArray;
-};
-
-function sortResults(elo, name){
+function sortResults(elo, name){ // Sorts the results from highest to lowest.
         // Create a map to store the relationships between elements in arr1 and arr2
         const mapping = new Map(name.map((element, index) => [element, elo[index]]));
         // Sort the second array (arr2) in ascending order
@@ -268,14 +214,14 @@ function sortResults(elo, name){
         return [elo, name]; // Return both sorted arrays
 };
 
-function elo_to_percentage(elo, min, max){
+function elo_to_percentage(elo, min, max){ // Creates a score out of 100% based on the highest and lowest scoring items.
     let elo_difference = max - min;
     let percentage = (elo - min) / elo_difference;
     return percentage;
 };
 
-function elo_percent_from_neutral(elo){
-    let neutral_elo = 1000;
+function elo_percent_from_neutral(elo){ // Translates the score into a margin based on what a completely neutral item would be.
+    let neutral_elo = 1200;
     let percent_from_neutral = elo / neutral_elo;
     let reported_difference;
     if (percent_from_neutral <= 1.0){
@@ -290,41 +236,7 @@ function elo_percent_from_neutral(elo){
     return reported_difference;
 };
 
-function elo_color_percent_from_neutral(elo){
-    let neutral_elo = 1000;
-    let percent_from_neutral = elo / neutral_elo;
-    let color;
-    if (percent_from_neutral <= 1.0){
-        /* Negative Difference */
-        color = "#00255D"
-    } else if (percent_from_neutral >= 1.0){
-        /* Positive Difference */
-        color = "#00255D"
-    } else if (percent_from_neutral == 1.0){
-        color = "#00255D"
-    }
-    return color;
-};
-
-function color_for_score(score){
-    let colors = ['#CB4064', '#E36F3D', '#ad5e3a', '#3b7f55', '#092659'];
-    let bgcolor;
-    if (score >= 80){
-        bgcolor = colors[4];
-    } else if ((score >= 60) && (score <= 80)){
-        bgcolor = colors[3];
-    } else if ((score >= 40) && (score <= 60)){
-        bgcolor = colors[2];
-    } else if ((score >= 20) && (score <= 40)){
-        bgcolor = colors[1];
-    } else if (score <= 20){
-        bgcolor = colors[0];
-    }
-    return bgcolor;
-};
-
-
-function percentage_to_grade(percentage){
+function percentage_to_grade(percentage){ // Optional function to convert score into a letter grade based on percentage.
     let rank = (percentage * 100).toFixed(0)
     let grade;
     if (rank >= 94){
@@ -361,51 +273,47 @@ function percentage_to_grade(percentage){
 
 };
 
-function printMatrix(myArray){
+function printMatrix(myArray){ // Puts results into HTML & CSS.
 
+    // Step 1: Sort existing array in order of highest scoring to lowest scoring
     sortResults(elo, list);
     
+    // Step 2: Find the highest and lowest valued items on the list.
     let eloMax = Math.max(...elo);
     let eloMin = Math.min(...elo)
 
+    // Step 3: Build HTML text in order of results..
     let result = "";
     result += '<div class="results_main_data_list_item" id="results_main_data_list_header"><p class="results_main_data_list_item_name">Place</p><p class="results_main_data_list_item_name">Item</p><p class="results_main_data_list_item_name" id="results_main_data_list_header_score">Score</p></div>';
 
     for (let i=0; i<myArray.length; i++) {
         let score_percent = elo_to_percentage(elo[i], eloMin, eloMax);
         result += '<div class="results_main_data_list_item"><p class="results_main_data_list_item_place">' + (i+1) + '. </p><p class="results_main_data_list_item_name">' + list[i] + '</p><p class="results_main_data_list_item_score" style="background-color:' + colorscale[((elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(0))] + ';">' + (elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(1) + '%</p></div>';
-        
-
     };
 
     return result;
 };
 
-function create_list_start_vote(){
+function create_list_start_vote(){ // Starts the vote
 
-    if (itemList.length >= 3){
-
+    if (itemList.length >= 3){ // Checks to see if there is at least three items in the itemList
         list = itemList;
+        window.localStorage.setItem('list', JSON.stringify(list)); // Puts item list in local storage
 
-        window.localStorage.setItem('list', JSON.stringify(list));
+        totalRounds = ((list.length) * (list.length)) - (list.length); // Determines the minimal number of rounds that need to take place for all unique pairs to be voted on.
+        idealAverage = 1 / totalRounds; // Determines the ideal chances of one pair being voted over another. Helps ensure that only the unique ones are chosen.
+        // For an ELO to be considered stable, at least 25 rounds with each item must be voted on.
+        // Possible idea for a "high accuracy" mode
 
-        fifoRow = Array((list.length) - 2);
-        fifoColumn = Array((list.length) - 2);
-        totalRounds = ((list.length) * (list.length)) - (list.length);
-        idealAverage = 1 / totalRounds;
-        console.log(totalRounds);
-        console.log((idealAverage)*100 + "%");
-        document.getElementById("vote").style.display = "block";
+        document.getElementById("vote").style.display = "block"; 
         document.getElementById("create_list").style.display = "none";
 
-        
         if (!window.localStorage.getItem('matrix')){
-            
             for (let i=0; i<list.length; i++) {
                 matrix[i] = [];
                 booleanMatrix[i] = []
                 totalVotes[i] = []
-                elo[i] = 1000;
+                elo[i] = 1200;
                 for (let j=0; j < list.length; j++){
                     matrix[i][j] = list[i] + " v. " + list[j];
                     booleanMatrix[i][j] = 50;
@@ -414,13 +322,11 @@ function create_list_start_vote(){
             };
 
         };
-
         giveChoice();
-
     };
 };
 
-function giveChoice(){
+function giveChoice(){ // Draws two random items on the list, and calculates the odds of them winning.
 
     percentageRemainingVotes = sumTotalVotes / ( (list.length - 1)*(list.length/2));
 
@@ -428,9 +334,8 @@ function giveChoice(){
 /*         document.getElementById("votes-needed").innerHTML = '<p class="not-ready">Votes Needed: ' + sumTotalVotes + '/' +  (list.length - 1)*(list.length/2) + '</p>'; */
         document.getElementById("vote_main_progress").innerHTML = '<progress id="vote_main_progress_bar" value="' + sumTotalVotes + '" max="' + (list.length - 1)*(list.length/2) + '"></progress> <div class="vote_main_progress_status"><p>' + (((list.length - 1)*(list.length/2)) - sumTotalVotes) + ' Votes Needed</p><p>' + Math.round(percentageRemainingVotes * 100) + '% Complete</p></div>';
     } else if (percentageRemainingVotes >= .999){
-        document.getElementById("vote_main_progress").innerHTML = '<progress id="vote_main_progress_bar" value="' + sumTotalVotes + '" max="' + (list.length - 1)*(list.length/2) + '"></progress> <div class="vote_main_progress_status"><p>' + (sumTotalVotes) + ' Total Votes</p><p>100% Complete</p></div>';
-        document.getElementById("vote_results_disabled").style.display = 'none';
-        document.getElementById("vote_results_enabled").style.display = 'flex';
+        showResults();
+        // document.getElementById("vote_main_progress").innerHTML = '<progress id="vote_main_progress_bar" value="' + sumTotalVotes + '" max="' + (list.length - 1)*(list.length/2) + '"></progress> <div class="vote_main_progress_status"><p>' + (sumTotalVotes) + ' Total Votes</p><p>100% Complete</p></div>';
     }
 
     // Drawing criteria:
@@ -438,17 +343,14 @@ function giveChoice(){
     // 2. Of the two choices, one must not have been drawn in the prior round. (if the last round was between x & y, then this round cannot have both x or y as choices. It must be one or the other. )
     // 3. The pair must have been chosen less than frequently.
 
-
-
     do{
         do {
             chooseRow = Math.floor(Math.random() * list.length);
-        } while (/* fifoRow.includes(chooseRow) */ chooseRow == lastRowChoice);
-
+        } while ( chooseRow == lastRowChoice);
 
         do {
             chooseColumn =  Math.floor(Math.random() * list.length);
-        } while (/* fifoRow.includes(chooseColumn) */ (chooseColumn == lastColumnChoice) || (chooseColumn == chooseRow));
+        } while ( (chooseColumn == lastColumnChoice) || (chooseColumn == chooseRow));
 
     } while ((totalVotes[chooseColumn][chooseRow])/(sumTotalVotes*2) > idealAverage);
 
@@ -456,65 +358,25 @@ function giveChoice(){
     lastRowChoice = chooseRow;
     lastColumnChoice = chooseColumn;
 
-/* 
-    fifoRow.shift();
-    fifoRow.push(chooseRow);
-
-    fifoRow.shift();
-    fifoRow.push(chooseColumn); */
-
     document.getElementById("vote_main_inputs_dynamic_button_option1").blur
     document.getElementById("vote_main_inputs_dynamic_button_option2").blur
     document.getElementById("vote_main_inputs").innerHTML = '<div class="vote_main_inputs_dynamic"><input type="button" class="vote_main_inputs_dynamic_button" onclick="option(' + chooseRow +', ' + chooseColumn +')" name="vote_main_inputs_dynamic_button_option1" id="vote_main_inputs_dynamic_button_option1" value="' + list[chooseRow] + '">' + '<input type="button" class="vote_main_inputs_dynamic_button" onclick="option(' + chooseColumn +', ' + chooseRow +')"" name="vote_main_inputs_dynamic_button_option2" id="vote_main_inputs_dynamic_button_option2" value="' + list[chooseColumn] + '"></div>';
 
-
     choiceA_Rating = elo[chooseRow];
     choiceB_Rating = elo[chooseColumn];
-
-/*     let x = choiceA_Rating - choiceB_Rating;
-    let y = choiceB_Rating - choiceA_Rating; */
 
     choiceA_TotalVotes = sumArrays(totalVotes[chooseRow]);
     choiceB_TotalVotes = sumArrays(totalVotes[chooseColumn]);
 
-    //Expected Score
-
-  /*   choiceA_ExpectedScore = 1/(1+10**((y)/1000));
-    choiceB_ExpectedScore = 1/(1+10**((x)/1000)); */
-
-
     choiceA_ExpectedScore = getExpectedScore(choiceA_Rating, choiceB_Rating);
     choiceB_ExpectedScore = getExpectedScore(choiceB_Rating, choiceA_Rating);
-
-
 
     choiceA_K = findK(choiceA_TotalVotes, choiceA_Rating);
     choiceB_K = findK(choiceB_TotalVotes, choiceB_Rating);
 
 };
 
-function option(chosen, rejected){
-
-    
-
-
-
-    //Calculating ELO: 
-    // Step 1: Find the Expected Score
-    // E(a) = 1 / 1 + 10 ^ ((Rating(b) - Rating(a))/400)
-    // E(b) = 1 / 1 + 10 ^ ((Rating(a) - Rating(b))/400)
-
-    // Step 2: Determine K-Factor
-    // if ((totalVotes < 30) || (rating < 2400){ K = 40 };
-    // if ((totalVotes > 30) || (rating < 2400){ K = 20 };
-    // if ((totalVotes > 30) || (rating > 2400){ K = 10 };
-
-    // Step 3: Play the game and get an outcome
-
-    // Step 4: Based on the outcome (if "a" wins and "b" loses):
-    // Rating(a) + K(1-E(a))
-    // Rating(b) + K(0-E(b))
-
+function option(chosen, rejected){ // Changes the ELO score for each item after voting.
 
     if (elo[chooseRow] == elo[chosen]){
         elo[chosen] = choiceA_Rating + choiceA_K * (1 - choiceA_ExpectedScore);
@@ -532,23 +394,11 @@ function option(chosen, rejected){
         }
     }; 
 
-   /*  let x = elo[chosen] - elo[rejected];
-    let y = elo[rejected] - elo[chosen];
-
-    let chosenChance = 1/(1+10**((y)/1000));
-    let rejectedChance = 1/(1+10**((x)/1000));
-
-    booleanMatrix[chosen][rejected] = (chosenChance * 100).toFixed(2); //Updated Changed
-    booleanMatrix[rejected][chosen] = (rejectedChance * 100).toFixed(2); //Updated Chances */
-
-
     for (let i=0; i<matrix.length; i++){
         for (let j=0; j<matrix.length; j++){
             booleanMatrix[i][j] = (getExpectedScore(elo[i], elo[j])*100);
         }
     }
-
-
 
     totalVotes[chosen][rejected] += 1;
     totalVotes[rejected][chosen] += 1;
@@ -559,36 +409,22 @@ function option(chosen, rejected){
     
 
     giveChoice();
-    // document.getElementById("results_main_data_list").innerHTML = printMatrix(matrix);
-
 
     window.localStorage.setItem('elo', JSON.stringify(elo));
     window.localStorage.setItem('votes', JSON.stringify(totalVotes));
     window.localStorage.setItem('matrix', JSON.stringify(matrix));
     window.localStorage.setItem('boolean-matrix', JSON.stringify(booleanMatrix));
-/* 
-    document.getElementById("results-list").innerHTML = " "
-
-    for (let i=0; i<list.length; i++) {
-        document.getElementById("results-list").innerHTML += '<li><b>' + list[i] + ': </b>' + Math.round(elo[i]) +'</li>';
-    }; */
 
 };
 
-function showResults(){
+function showResults(){ // Displays results screen
     document.getElementById("vote").style.display = "none";
     document.getElementById("results").style.display = "flex";
-
     document.getElementById("results_main_data_list").innerHTML = printMatrix(matrix);
     document.getElementById("results_main_favorite_name").innerHTML = list[0];
 };
 
-function keepVoting(){
-    document.getElementById("vote").style.display = "block";
-    document.getElementById("results").style.display = "none";  
-};
-
-function restart(){
+function restart(){ // Resets all functions back to the beginning.
     window.localStorage.removeItem('elo');
     window.localStorage.removeItem('votes');
     window.localStorage.removeItem('matrix');
@@ -602,21 +438,15 @@ function restart(){
     list = [];
     elo = [];
     sumTotalVotes = 0;
-
     itemList=[];
     itemListHTMLPreview.innerHTML = '';
 
     document.getElementById("vote").style.display = "none";
     document.getElementById("create_list").style.display = "flex";
-
     document.getElementById("results").style.display = "none";
-
-
     document.getElementById("create_list_start_vote_form_submit_enabled").style.display = 'none';
     document.getElementById("create_list_start_vote_form_submit_disabled").style.display = 'flex';
-
     document.getElementById("create_list_welcome_message").style.display = 'flex';
-
     document.getElementById("vote_results_disabled").style.display = 'flex';
     document.getElementById("vote_results_enabled").style.display = 'none';
 
