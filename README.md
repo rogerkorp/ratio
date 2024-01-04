@@ -1,15 +1,3 @@
-# decide-web-app
+# Ratio
 
- A user-friendly, high-fidelity version of my decision making tool!
-
-## Naming Convention
-
-- Underscores for variable names.
-
-- standard_button
-
-
-- itemList = create_list_preview_items_data
-- itemListItem= create_list_preview_items_data_unit
-- listItemText= create_list_preview_items_data_unit_text
-- removeListItemButton= create_list_preview_items_data_unit_delete
+Ratio is a web-app built for iOS devices that ranks items in a list to determine which one is your preference.
