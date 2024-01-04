@@ -1,8 +1,8 @@
 /* ------- Custom Properties ------- */
 
 :root{
-    --background_color: #faf2e5;
-    --inactive: #bce6f4;
+    --background_color: #e7eef2;
+    --inactive: #e2edf1;
     --primary_accent: #00255D; /*5486A2*/
     --seconary-accent: #53c6bf;
     --tertiary_accent: #dc2e63;
@@ -188,7 +188,7 @@ body{
     bottom: 0;
     color: var(--primary_accent);
     font-family: 'Poppins';
-    font-size: 1em;
+    font-size: .95em;
     left: 0;
     position: fixed;
     right: 0;
@@ -313,7 +313,7 @@ progress::-moz-progress-bar {
 .create_list_preview_items_data{
     margin-bottom: 0;
     margin-top: auto;
-    padding-bottom: 6.25em;
+    padding-bottom: 5.5em;
     padding-left: 2em;
     padding-top: 2em;
 }
@@ -392,11 +392,12 @@ progress::-moz-progress-bar {
 }
 
 #create_list_textbox_form_input_id{
+    background-color: var(--inactive);
+    border: none; 
     border-radius: 5em;
-    border: 2px solid var(--primary_accent);  
     color: var(--primary_accent);
     margin: 1em;
-    padding: .75em;
+    padding: .5em;
     width: 100%;
 }
 
@@ -619,7 +620,7 @@ progress::-moz-progress-bar {
     align-items: center;
     justify-content: center;
     font-weight: 600;
-    padding: .75em;
+    padding: .6em;
 }
 
 

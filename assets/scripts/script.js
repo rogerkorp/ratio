@@ -178,15 +178,9 @@ function sumArrays(array){ // Determines how many rounds a specific item has app
 
 function findK(votes, rating){ // For each item, it takes the total number of times it has appeared in a vote, its current score, and gives it a number that determines the minimum/maximum points that can be gained/lost.
     let k;
-    if ((votes <= 10) & (rating <= 2000)){
-        k = 32;
-    } else if ((votes > 10) & (rating <= 2000)){
-        k = 24;
-    } else if ((votes > 10) & (rating > 2000)){
-        k = 16;
-    };
+   
+    k = (800/(votes+1));
 
-    console.log ("Rating: " + rating + " K-Factor: " + k);
     return k;
 };
 
@@ -286,13 +280,27 @@ function printMatrix(myArray){ // Puts results into HTML & CSS.
     return result;
 };
 
+function get_number_of_rounds(length){
+
+    let x = length;
+    let y;
+
+    if (x <= 26){
+        y = ((((x * x) - x) / 2) * (25 / (x - 1))).toFixed(0);
+    } else if (x > 26){
+        y = ((x * x) - x) / 2;
+    }
+
+    return y;
+}
+
 function create_list_start_vote(){ // Starts the vote
 
     if (itemList.length >= 3){ // Checks to see if there is at least three items in the itemList
         list = itemList;
         window.localStorage.setItem('list', JSON.stringify(list)); // Puts item list in local storage
 
-        totalRounds = ((list.length) * (list.length)) - (list.length); // Determines the minimal number of rounds that need to take place for all unique pairs to be voted on.
+        totalRounds = get_number_of_rounds(list.length); // Determines the minimal number of rounds that need to take place for all unique pairs to be voted on.
         idealAverage = 1 / totalRounds; // Determines the ideal chances of one pair being voted over another. Helps ensure that only the unique ones are chosen.
         // For an ELO to be considered stable, at least 25 rounds with each item must be voted on.
         // Possible idea for a "high accuracy" mode
@@ -320,13 +328,13 @@ function create_list_start_vote(){ // Starts the vote
 
 function giveChoice(){ // Draws two random items on the list, and calculates the odds of them winning.
 
-    percentageRemainingVotes = sumTotalVotes / ( (list.length - 1)*(list.length/2));
+    percentageRemainingVotes = sumTotalVotes / get_number_of_rounds(list.length);
 
     if (percentageRemainingVotes <= .999){
 /*         document.getElementById("votes-needed").innerHTML = '<p class="not-ready">Votes Needed: ' + sumTotalVotes + '/' +  (list.length - 1)*(list.length/2) + '</p>'; */
-        document.getElementById("vote_main_progress").innerHTML = '<progress id="vote_main_progress_bar" value="' + sumTotalVotes + '" max="' + (list.length - 1)*(list.length/2) + '"></progress> <div class="vote_main_progress_status"><p>' + (((list.length - 1)*(list.length/2)) - sumTotalVotes) + ' Votes Needed</p><p>' + Math.round(percentageRemainingVotes * 100) + '% Complete</p></div>';
+        document.getElementById("vote_main_progress").innerHTML = '<progress id="vote_main_progress_bar" value="' + sumTotalVotes + '" max="' + get_number_of_rounds(list.length) + '"></progress> <div class="vote_main_progress_status"><p>' + (((list.length - 1)*(list.length/2)) - sumTotalVotes) + ' Votes Needed</p><p>' + Math.round(percentageRemainingVotes * 100) + '% Complete</p></div>';
     } else if (percentageRemainingVotes >= .999){
-        document.getElementById("vote_main_progress").innerHTML = '<progress id="vote_main_progress_bar" value="' + sumTotalVotes + '" max="' + (list.length - 1)*(list.length/2) + '"></progress> <div class="vote_main_progress_status"><p>' + (sumTotalVotes) + ' Total Votes</p><p>100% Complete</p></div>';
+        document.getElementById("vote_main_progress").innerHTML = '<progress id="vote_main_progress_bar" value="' + sumTotalVotes + '" max="' + get_number_of_rounds(list.length) + '"></progress> <div class="vote_main_progress_status"><p>' + (sumTotalVotes) + ' Total Votes</p><p>100% Complete</p></div>';
         document.getElementById("vote_results_disabled").style.display = 'none';
         document.getElementById("vote_results_enabled").style.display = 'flex';
     }
