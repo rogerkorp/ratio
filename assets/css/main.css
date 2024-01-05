@@ -1,10 +1,10 @@
 /* ------- Custom Properties ------- */
 
 :root{
-    --background_color: #faf2e5;
-    --inactive: #bce6f4;
+    --background_color: #d5daf7;
+    --inactive: #d5daf7;
     --primary_accent: #00255D; /*5486A2*/
-    --seconary-accent: #53c6bf;
+    --seconary-accent: #9253c6;
     --tertiary_accent: #dc2e63;
     --white: #ffffff;
 }
@@ -325,7 +325,7 @@ progress::-moz-progress-bar {
     display: flex;
     justify-content: space-between;
     margin: .5em .5em .5em -1.5em;
-    padding: .5em;
+    padding: .75em;
 }
 
 .create_list_preview_items_data_unit_delete{
@@ -359,7 +359,7 @@ progress::-moz-progress-bar {
 
 #create_list_start_vote_form_submit_disabled{
     background-color: var(--inactive);
-    color: var(--primary_accent);
+    color: var(--white);
 }
 
 #create_list_start_vote_form_submit_disabled:hover{
@@ -393,9 +393,9 @@ progress::-moz-progress-bar {
 
 #create_list_textbox_form_input_id{
     border-radius: 5em;
-    border: 2px solid var(--primary_accent);  
+    border: 2px solid var(--inactive);  
     color: var(--primary_accent);
-    margin: 1em;
+    margin: 1em .5em 1em .5em;
     padding: .75em;
     width: 100%;
 }
@@ -457,6 +457,8 @@ progress::-moz-progress-bar {
     align-items: center;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    margin: 1em
 
 }
 
@@ -471,7 +473,7 @@ progress::-moz-progress-bar {
     margin: .25em;
     padding: .25em;
     white-space: normal;
-    width: 90vw;
+    width: 100%;
     word-wrap: break-word;
 }
 
