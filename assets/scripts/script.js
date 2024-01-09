@@ -179,22 +179,8 @@ function sumArrays(array){ // Determines how many rounds a specific item has app
 function findK(votes, rating){ // For each item, it takes the total number of times it has appeared in a vote, its current score, and gives it a number that determines the minimum/maximum points that can be gained/lost.
     let k;
 
-    // Three-tier K system
+    k = 32;
 
-/*     if ((votes <= 10) & (rating <= 2000)){
-        k = 32;
-    } else if ((votes > 10) & (rating <= 2000)){
-        k = 24;
-    } else if ((votes > 10) & (rating > 2000)){
-        k = 16;
-    }; */
-
-
-    // Progressive K system
-
-    k = (800/(votes+1));
-
-    console.log ("Rating: " + rating + " K-Factor: " + k);
     return k;
 };
 
@@ -220,24 +206,9 @@ function elo_to_percentage(elo, min, max){ // Creates a score out of 100% based 
     return percentage;
 };
 
-function elo_percent_from_neutral(elo){ // Translates the score into a margin based on what a completely neutral item would be.
-    let neutral_elo = 1200;
-    let percent_from_neutral = elo / neutral_elo;
-    let reported_difference;
-    if (percent_from_neutral <= 1.0){
-        /* Negative Difference */
-        reported_difference = '-' + (100-(percent_from_neutral*100)).toFixed(1) + '%';
-    } else if (percent_from_neutral >= 1.0){
-        /* Positive Difference */
-        reported_difference = '+' + ((percent_from_neutral * 100) - 100).toFixed(1) + '%'; 
-    } else if (percent_from_neutral == 1.0){
-        reported_difference = '0%';
-    }
-    return reported_difference;
-};
 
 function percentage_to_grade(percentage){ // Optional function to convert score into a letter grade based on percentage.
-    let rank = (percentage * 100).toFixed(0)
+    let rank = (percentage).toFixed(0)
     let grade;
     if (rank >= 94){
         grade = "A+";
@@ -269,6 +240,7 @@ function percentage_to_grade(percentage){ // Optional function to convert score 
         grade = "N/A"
     }
     console.log(grade);
+    console.log(rank);
     return grade;
 
 };
@@ -284,11 +256,11 @@ function printMatrix(myArray){ // Puts results into HTML & CSS.
 
     // Step 3: Build HTML text in order of results..
     let result = "";
-    result += '<div class="results_main_data_list_item" id="results_main_data_list_header"><p class="results_main_data_list_item_name">Place</p><p class="results_main_data_list_item_name">Item</p><p class="results_main_data_list_item_name" id="results_main_data_list_header_score">Score</p></div>';
+    result += '<div class="results_main_data_list_item" id="results_main_data_list_header"><p class="results_main_data_list_item_header_name" id="results_main_data_list_item_header_name_place">Place</p><p class="results_main_data_list_item_header_name" id="results_main_data_list_item_header_name_title">Item</p><p class="results_main_data_list_item_header_name" id="results_main_data_list_item_header_name_votes">Wins</p></div>';
 
     for (let i=0; i<myArray.length; i++) {
         let score_percent = elo_to_percentage(elo[i], eloMin, eloMax);
-        result += '<div class="results_main_data_list_item"><p class="results_main_data_list_item_place">' + (i+1) + '. </p><p class="results_main_data_list_item_name">' + list[i] + '</p><p class="results_main_data_list_item_score" style="background-color:' + colorscale[((elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(0))] + ';">' + (elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(1) + '%</p></div>';
+        result += '<div class="results_main_data_list_item"><p class="results_main_data_list_item_place" style="background-color:' + colorscale[((elo_to_percentage(elo[i], eloMin, eloMax)*100).toFixed(0))] + ';">' + (i+1) + '. </p><p class="results_main_data_list_item_name">' + list[i] + '</p><p class="results_main_data_list_item_votes">' + elo[i] + ' Wins</p></div>';
     };
 
     return result;
@@ -313,7 +285,7 @@ function create_list_start_vote(){ // Starts the vote
                 matrix[i] = [];
                 booleanMatrix[i] = []
                 totalVotes[i] = []
-                elo[i] = 1200;
+                elo[i] = 0;
                 for (let j=0; j < list.length; j++){
                     matrix[i][j] = list[i] + " v. " + list[j];
                     booleanMatrix[i][j] = 50;
@@ -368,37 +340,19 @@ function giveChoice(){ // Draws two random items on the list, and calculates the
     choiceA_TotalVotes = sumArrays(totalVotes[chooseRow]);
     choiceB_TotalVotes = sumArrays(totalVotes[chooseColumn]);
 
-    choiceA_ExpectedScore = getExpectedScore(choiceA_Rating, choiceB_Rating);
-    choiceB_ExpectedScore = getExpectedScore(choiceB_Rating, choiceA_Rating);
-
-    choiceA_K = findK(choiceA_TotalVotes, choiceA_Rating);
-    choiceB_K = findK(choiceB_TotalVotes, choiceB_Rating);
-
 };
 
 function option(chosen, rejected){ // Changes the ELO score for each item after voting.
 
     if (elo[chooseRow] == elo[chosen]){
-        elo[chosen] = choiceA_Rating + choiceA_K * (1 - choiceA_ExpectedScore);
-        elo[rejected] = choiceB_Rating + choiceB_K * (0 - choiceB_ExpectedScore);
-        if (elo[rejected]<= 100){
-            elo[rejected] = 100;
-        }
+        elo[chosen] = choiceA_Rating + 1;
+        elo[rejected] = choiceB_Rating + 0;
     }; 
 
     if (elo[chooseColumn] == elo[chosen]){
-        elo[chosen] = choiceB_Rating + choiceB_K * (1 - choiceB_ExpectedScore);
-        elo[rejected] = choiceA_Rating + choiceA_K * (0 - choiceA_ExpectedScore);
-        if (elo[rejected]<= 100){
-            elo[rejected] = 100;
-        }
+        elo[chosen] = choiceB_Rating + 1;
+        elo[rejected] = choiceA_Rating + 0;
     }; 
-
-    for (let i=0; i<matrix.length; i++){
-        for (let j=0; j<matrix.length; j++){
-            booleanMatrix[i][j] = (getExpectedScore(elo[i], elo[j])*100);
-        }
-    }
 
     totalVotes[chosen][rejected] += 1;
     totalVotes[rejected][chosen] += 1;
