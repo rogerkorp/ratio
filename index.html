@@ -1,5 +1,5 @@
 <!-- Ratio by Roger Korpics -->
-<!-- Version 1.3.3 -->
+<!-- Version 1.3.4 -->
 
 <!DOCTYPE html>
 <html manifest="cache.manifest" lang="en">
@@ -61,16 +61,6 @@
     <body onload="readData()">
 
 
-
-        <!-- Landscape Warning Message -->
-
-        <div id="landscape_warning">
-            <p>Please rotate your device</p>
-            <p>This app is vertical only.</p>
-        </div>
-
-
-
         <!-- Help Section -->
 
         <div id="help" style="display:none">
@@ -81,7 +71,7 @@
                 <p>During the exercise, you will be given <b>unique pairings</b> of two items in your list. All you have to do is <b>tap on the item you prefer!</b></p>
                 <p>Once all unique pairings have been voted on, press the <b>See Results</b> button to see how each list item did! <b>The higher the percentage, the more you preferred it.</b></p>
             </div>
-            <button class="standard_button" onclick="toggle_help()">Got it!</button>
+            <button class="standard_button" onclick="toggle_help()">Got It!</button>
         </div>
 
 
@@ -93,12 +83,14 @@
             <!-- Navigation Bar -->
 
             <nav>
-                <button class="standard_button" onclick="toggle_help()">Help</button>
-                <div class="logo"><img class="logo" src="assets/icon/favicon.svg"></div>
-                <form id="create_list_start_vote_form" name="create_list_start_vote_form" onsubmit="return create_list_start_vote(this)">
-                    <button class="standard_button" id="create_list_start_vote_form_submit_enabled" style="display:none" name="create_list_start_vote_form_submit" value="Submit">Start Vote</button>
-                    <button class="standard_button" id="create_list_start_vote_form_submit_disabled" style="display:flex">Start Vote</button>
-                </form>
+                <div class="nav_container">
+                    <button class="standard_button" onclick="toggle_help()">Help</button>
+                    <div class="logo"><img class="logo" src="assets/icon/favicon.svg"></div>
+                    <form id="create_list_start_vote_form" name="create_list_start_vote_form" onsubmit="return create_list_start_vote(this)">
+                        <button class="standard_button" id="create_list_start_vote_form_submit_enabled" style="display:none" name="create_list_start_vote_form_submit" value="Submit">Start Vote</button>
+                        <button class="standard_button" id="create_list_start_vote_form_submit_disabled" style="display:flex">Start Vote</button>
+                    </form>
+                </div>
             </nav>
 
             <!-- Welcome message -->
@@ -106,7 +98,6 @@
             <div id="create_list_welcome_message" style="display:flex;">
                 <img src="assets/icon/welcome.svg">
                 <h1>Ratio</h1>
-                <p id="create_list_welcome_message_version_number">Version 1.3.3</p>
                 <p>To start a vote, please submit at least 3 choices using the textbox below.</p>
             </div>
 
@@ -123,6 +114,7 @@
             <div class="create_list_textbox">
                 <form action id="create_list_textbox_form" onSubmit="return false;">
                     <input class="create_list_textbox_form_input" id="create_list_textbox_form_input_id" name="create_list_textbox_form_input_id" type="text" placeholder="Add a choice...">
+                    <input type="button" class="create_list_textbox_form_submit" value="+" onclick="appendVotingList()">
                 </form>
             </div>
         </div>
@@ -136,9 +128,12 @@
             <!-- Navigation Bar -->
 
             <nav>
-                <button class="standard_button" onclick="restart()" id="vote_restart">Cancel Vote</button>
-                <div class="logo"><img class="logo" src="assets/icon/favicon.svg"></div>
-                <div></div>
+                <div class="nav_container">
+                    <button class="standard_button" onclick="restart()" id="vote_restart">Cancel Vote</button>
+                    <div class="logo"><img class="logo" src="assets/icon/favicon.svg"></div>
+                    <div></div>
+                </div>
+
             </nav>
 
             <!-- Main -->
@@ -163,7 +158,12 @@
                         <input type="button" class="vote_main_inputs_dynamic_button" onclick="option()" name="vote_main_inputs_dynamic_button_option2" id="vote_main_inputs_dynamic_button_option2" value="B">
                     </div>
                 </div>
+
+    
+        
             </div>
+
+
         
         </div>
 
@@ -176,9 +176,11 @@
             <!-- Navigation Bar -->
 
             <nav>
-                <div></div> <!-- This is blank on purpose. -->
-                <div class="logo"><img class="logo" src="assets/icon/favicon.svg"></div>
-                <button class="standard_button" onclick="restart()">New Vote</button>
+                <div class="nav_container">
+                    <div></div> <!-- This is blank on purpose. -->
+                    <div class="logo"><img class="logo" src="assets/icon/favicon.svg"></div>
+                    <button class="standard_button" onclick="restart()">New Vote</button>
+                </div>
             </nav>
 
             <!-- Main Results -->
